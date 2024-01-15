@@ -1,0 +1,142 @@
+body {
+  background-color: #223051;
+}
+
+b {
+  color: #D31E1E;
+  -webkit-text-stroke: 1px red;
+}
+
+#plaintext-display {
+  display: block;
+  overflow: hidden;
+  width: 290px;
+  height: 80px;
+  background-color: #190000;
+  color: #300808;
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 20px;
+  padding-left: 20px;
+}
+
+.key-button {
+  display: block;
+  overflow: hidden;
+  width: 80px;
+  float: left;
+  margin-left: 5px;
+  margin-top: 5px;
+  text-align: center;
+  background-color: #101010;
+  color: white;
+  font-family: sans-serif;
+  letter-spacing: 0.5pt;
+  border: outset 5px #444;
+  border-radius:6px;
+  padding-top: 6px;
+  padding-bottom: 3px;
+  cursor: pointer;
+}
+
+.odd-row {
+  padding-top: 24px;
+  padding-bottom: 0px;
+}
+      
+.keypad {
+  display: block;
+  overflow: hidden;
+  width: 330px;
+  height: auto;
+  margin-top: -20px;
+  margin-left: 40px;
+  text-align: center;
+}
+
+.float-right {
+  float: right;
+}
+
+.button-function    {
+  font-size: 1.1em;
+}
+
+span.digit {
+  font-size: 2.4em;
+  font-weight: bold;
+}
+
+.power-button {
+  color: rgba(0, 0, 0, 0);
+  background-color: #555555;
+  font-size: 3em;
+}
+
+.power-button.active {
+  color: rgba(0, 0, 0, 0);
+  background-color: #171717;
+}
+
+.power-button.right {
+  border-style: inset;
+}
+
+.power-led {
+  color: rgba(0, 0, 0, 0);
+  margin-top: 10px;
+  border: 0px;
+  background-color: #6D1D1D;
+  border-radius: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.power-led.active {
+  border: 1px solid white;
+  background-color: red;
+  border-radius: 20px;
+}
+
+.led-area {
+  color: white;
+  margin-top: 15px;
+  margin-left: 20px;
+}
+
+.power-area table {
+  background-color: #222222;
+  border: 3px solid #444444;
+}
+
+/* SVG Selectors */
+.power-on #power-led-body {
+  fill: #DD1717;
+}
+
+.power-on #power-led-glare {
+  fill: #FF5555;
+}
+
+.power-on #power-led-deep {
+  fill: #DD1717;
+}
+
+.seven-segment-display.a > .a,
+.seven-segment-display.b > .b,
+.seven-segment-display.c > .c,
+.seven-segment-display.d > .d,
+.seven-segment-display.e > .e,
+.seven-segment-display.f > .f,
+.seven-segment-display.g > .g,
+.seven-segment-display.dp > .dp {
+  fill: #db2638;
+}
+
+.trainer-simulation {
+  margin-top: 800px;
+  display: block;
+  margin-left: auto;
+  max-width: 2000px;
+}
+    

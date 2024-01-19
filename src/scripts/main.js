@@ -734,7 +734,6 @@ class Microprocessor {
     this.addressRegister = this.RMW(Microprocessor.interruptVector.RST)
     this.JMP(this.addressRegister);
     this.HALT(1);
-    this.fetchDecodeExecute();
   }
   
   RMB(address) {

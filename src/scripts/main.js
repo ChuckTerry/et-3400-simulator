@@ -51,30 +51,6 @@ class RandomAccessMemory extends Memory {
   
 }
 
-function EXIT(string) {
-  alert(`${string} @ Program Counter ${et3400.microprocessor.programCounter.toString(16)}`);
-  throw new Error(string);
-}
-
-function hex2binary(string) {
-  const length = string.length;
-  let returnValue = '';
-  for (let index = 0; index < length; ++index) {
-    returnValue += String.fromCharCode(parseInt(string.substr(index++, 2), 16));
-  }
-  return returnValue;
-}
-
-function loadProgramHex(address, string) {
-  et3400.microprocessor.programCounter = address;
-  const length = string.length;
-  for (let index = 0; index < length; index += 2) {
-    const byteString = `${string[index]}${string[index + 1]}`;
-    const decimal = parseInt(byteString, 16);
-    et3400.microprocessor.SMB(decimal);
-  }
-}
-
 /** =================================================
  *     Debugging & Information
  *  ================================================= */

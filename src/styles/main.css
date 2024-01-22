@@ -43,6 +43,10 @@ b {
   padding-top: 24px;
   padding-bottom: 0px;
 }
+
+.key-button .odd-row:first-of-type {
+  margin-left: 55px;
+}
       
 .keypad {
   display: block;

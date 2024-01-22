@@ -399,7 +399,9 @@ export class Microprocessor {
   }
 
   HCF() {
-    EXIT("Undocumented Op-Code");
+    const errorString = 'HCF - Undocumented Op-Code';
+    alert(`${errorString} @ Program Counter ${this.programCounter.toString(16)}`);
+    throw new Error(errorString);
   }
 
   INB(byte) {

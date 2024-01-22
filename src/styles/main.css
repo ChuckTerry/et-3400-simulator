@@ -7,6 +7,10 @@ b {
   -webkit-text-stroke: 1px red;
 }
 
+.sans-serif {
+  font-family: sans-serif;
+}
+
 #plaintext-display {
   display: block;
   overflow: hidden;
@@ -75,6 +79,15 @@ span.digit {
   color: rgba(0, 0, 0, 0);
   background-color: #555555;
   font-size: 3em;
+}
+
+.power-button-row td {
+  text-align: left;
+  width: 50px;
+}
+
+.power-button-row td:first-of-type {
+  text-align: right;
 }
 
 .power-button.active {

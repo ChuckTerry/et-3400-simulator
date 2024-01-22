@@ -2,6 +2,26 @@ import { Microprocessor } from './Microprocessor.js';
 import { contstructAddressingMethodTable } from './addressingMethods.js';
 import { padByteBinary, padWordHex } from './util.js';
 
+
+function hex2binary(string) {
+  const length = string.length;
+  let returnValue = '';
+  for (let index = 0; index < length; ++index) {
+    returnValue += String.fromCharCode(parseInt(string.substr(index++, 2), 16));
+  }
+  return returnValue;
+}
+
+function loadProgramHex(address, string) {
+  et3400.microprocessor.programCounter = address;
+  const length = string.length;
+  for (let index = 0; index < length; index += 2) {
+    const byteString = `${string[index]}${string[index + 1]}`;
+    const decimal = parseInt(byteString, 16);
+    et3400.microprocessor.SMB(decimal);
+  }
+}
+
 export class Et3400 {
 
   static keypad = {

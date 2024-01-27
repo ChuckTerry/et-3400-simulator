@@ -8,4 +8,6 @@
 
 
 
-An interactive simulator for the Heathkit® ET-3400 Microprocessor Trainer
+An interactive simulator for the [Heathkit](https://heathkit.com/)® ET-3400 Microprocessor Trainer.  Check out the [Live Demo](https://chuckterry.me/ET-3400-Simulator/src/index.html) and make sure to drop us any issues you encounter!
+
+![Et-3400 Simulator](./ET-3400.png)

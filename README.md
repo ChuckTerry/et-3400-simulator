@@ -12,5 +12,5 @@ An interactive simulator for the [Heathkit](https://heathkit.com/)® ET-3400 Mic
 
 ![Et-3400 Simulator](./ET-3400.png)
 
-##Disclaimer
+## Disclaimer
 I am a long-time fan of both Motorola and Heathkit products.  This project is intended for educational use and started as a personal challeneg to myself.  I am not an employee of, subcontractor of, or compensated in any way by Heath Company, Motorola, or any other company related to the real-world ET-3400 Microprocessor Trainer or its constituent parts. The "Stylized M Logo" is a trademark of Motorola Trademark Holdings, LLC.  Heathkit in all uses, the Heathkit name, and the Heathkit logo are internationally registered trademarks of Heath Company.

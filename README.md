@@ -8,6 +8,9 @@
 
 
 
-An interactive simulator for the [Heathkit](https://heathkit.com/)® ET-3400 Microprocessor Trainer.  Check out the [Live Demo](https://chuckterry.me/ET-3400-Simulator/src/index.html) and make sure to drop us any issues you encounter!
+An interactive simulator for the [Heathkit](https://heathkit.com/)® ET-3400 Microprocessor Trainer.  Check out the [Live Demo](https://chuckterry.me/ET-3400-Simulator/src/index.html) and make sure to submit an issue for any bugs you encounter or feature requests!
 
 ![Et-3400 Simulator](./ET-3400.png)
+
+##Disclaimer
+I am a long-time fan of both Motorola and Heathkit products.  This project is intended for educational use and started as a personal challeneg to myself.  I am not an employee of, subcontractor of, or compensated in any way by Heath Company, Motorola, or any other company related to the real-world ET-3400 Microprocessor Trainer or its constituent parts. The "Stylized M Logo" is a trademark of Motorola Trademark Holdings, LLC.  Heathkit in all uses, the Heathkit name, and the Heathkit logo are internationally registered trademarks of Heath Company.

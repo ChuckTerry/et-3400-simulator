@@ -156,4 +156,7 @@ span.digit {
   margin-left: auto;
   max-width: 2000px;
 }
-    
+
+.basic-interface {
+  display: none;
+}

@@ -1,5 +1,8 @@
+import { programs } from '../programs/programs.js';
 import { Et3400 } from './modules/Et3400.js';
 import { keypad } from './modules/keypad.js';
+
+import { programs } from '../programs/programs.js';
 
 class PrintableProgramLine {
   constructor(address, opCode, operand, label, mnemonicInstruction, mnemonicOperand, comment = '') {
@@ -162,16 +165,10 @@ function animateKeyUp(element) {
  *     Runtime
  *  ================================================= */
 window.addEventListener('load', () => {
-  globalThis.segmentDisplays = [
-    document.querySelector('#display-h'),
-    document.querySelector('#display-i'),
-    document.querySelector('#display-n'),
-    document.querySelector('#display-z'),
-    document.querySelector('#display-v'),
-    document.querySelector('#display-c')
-  ];
   window.addEventListener('message', onMessage, false);
   registerListeners();
   globalThis.et3400 = new Et3400();
   et3400.powerOff();
+  globalThis.loadProgram = et3400.loadProgram;
+  globalThis.programs = programs;
 });

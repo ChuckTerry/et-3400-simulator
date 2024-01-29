@@ -2,7 +2,6 @@ import { programs } from '../programs/programs.js';
 import { Et3400 } from './modules/Et3400.js';
 import { keypad } from './modules/keypad.js';
 
-import { programs } from '../programs/programs.js';
 
 class PrintableProgramLine {
   constructor(address, opCode, operand, label, mnemonicInstruction, mnemonicOperand, comment = '') {

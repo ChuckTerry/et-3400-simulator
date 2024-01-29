@@ -12,8 +12,8 @@ function makeKeyDownListener(keyData) {
     event.preventDefault();
     if (event.key.toUpperCase() === keyboardActivation) {
       animateKeyDown(element);
-      if (!et3400.powered) return;
-      et3400.pressKey(keyCode);
+      if (!globalThis.et3400.powered) return;
+      globalThis.et3400.pressKey(keyCode);
     }
   };
 }
@@ -25,8 +25,8 @@ function makeKeyUpListener(keyData) {
     event.preventDefault();
     if (event.key.toUpperCase() === keyboardActivation) {
       animateKeyUp(element);
-      if (!et3400.powered) return;
-      et3400.releaseKey(keyCode);
+      if (!globalThis.et3400.powered) return;
+      globalThis.et3400.releaseKey(keyCode);
     }
   };
 }
@@ -39,38 +39,23 @@ function makeClickListener(keyData) {
     animateKeyDown(element);
     window.setTimeout(() => animateKeyUp(element), 100);
     // If there's no power, do nothing
-    if (!et3400.powered) return;
+    if (!globalThis.et3400.powered) return;
     // Prevent default action in case the active pagte is embedded
     event.preventDefault();
     // Handle the logic of a key press
-    et3400.pressKey(keyCode);
-    window.setTimeout(() => et3400.releaseKey(keyCode), 50);
+    globalThis.et3400.pressKey(keyCode);
+    window.setTimeout(() => globalThis.et3400.releaseKey(keyCode), 50);
   };
 }
 
-function doPopout() {
-  globalThis.popout = window.open('./popout.html', '_blank');
-}
-
-function onMessage(event) {
-  const [action, operand] = event.data.split(':');
-  if (action === 'releaseKey') {
-    et3400.releaseKey(operand);
-  } else if (action === 'pressKey') {
-    et3400.pressKey(operand)
-  } else if (action === 'sendDisplayData') {
-    const currentDisplayHtml = document.querySelector('#plaintext-display').innerHTML;
-    globalThis.popout.postMessage(`updateDisplay:${currentDisplayHtml}`, '*');
-  }
-}
-
 function registerListeners(document = globalThis.document) {
+  const powerCycle = () => { globalThis.et3400.powerButton(); };
   // Register Listener on the Simulator Power Button
-  document.querySelector('#Switch').addEventListener('mouseup', () => { et3400.powerButton() });
+  document.querySelector('#Switch').addEventListener('mouseup', powerCycle);
   // Register Listeners on the Power Button
   const powerButtons = [...document.querySelectorAll('.power-button')];
-  powerButtons[0].addEventListener('mouseup', () => { et3400.powerButton() });
-  powerButtons[1].addEventListener('mouseup', () => { et3400.powerButton() });
+  powerButtons[0].addEventListener('mouseup', powerCycle);
+  powerButtons[1].addEventListener('mouseup', powerCycle);
   // Loop Through Keys on Keypad
   for (const property in keypad) {
     const keyData = keypad[property];
@@ -109,15 +94,35 @@ function animateKeyUp(element) {
 }
 
 /** =================================================
+ *     Popout Window
+ *  ================================================= */
+
+function doPopout() {
+  globalThis.popout = window.open('./popout.html', '_blank');
+}
+
+function onMessage(event) {
+  const [action, operand] = event.data.split(':');
+  if (action === 'releaseKey') {
+    globalThis.et3400.releaseKey(operand);
+  } else if (action === 'pressKey') {
+    globalThis.et3400.pressKey(operand);
+  } else if (action === 'sendDisplayData') {
+    const currentDisplayHtml = document.querySelector('#plaintext-display').innerHTML;
+    globalThis.popout.postMessage(`updateDisplay:${currentDisplayHtml}`, '*');
+  }
+}
+
+/** =================================================
  *     Runtime
  *  ================================================= */
 window.addEventListener('load', () => {
   window.addEventListener('message', onMessage, false);
   registerListeners();
   globalThis.et3400 = new Et3400();
-  et3400.powerOff();
+  globalThis.et3400.powerOff();
   globalThis.loadProgram = function(...args) {
-    return et3400.loadProgram(...args);
-  }
+    return globalThis.et3400.loadProgram(...args);
+  };
   globalThis.programs = programs;
 });

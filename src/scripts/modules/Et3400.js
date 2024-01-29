@@ -73,8 +73,8 @@ export class Et3400 {
     for (let index = 0; index < 256; ++index) {
       // Content-Addressable Memory
       const CAM = DTA.charCodeAt(index);
-      CYC[index] = CAM >> 4;
-      DCD[index] = this.addressingMethods[CAM & 0x0F];
+      globalThis.CYC[index] = CAM >> 4;
+      globalThis.DCD[index] = this.addressingMethods[CAM & 0x0F];
     }
     this.loadProgram(0xFC00, et3400Monitor);
     this.reset();
@@ -136,12 +136,12 @@ export class Et3400 {
     if (globalThis.popout) {
       globalThis.popout.postMessage(`updateDisplay:${string}`, '*');
     }
-    doDisplayUpdate = false;
+    globalThis.doDisplayUpdate = false;
   }
 
   updateSimulatorDisplay() {
-    const htmlString = document.querySelector("#plaintext-display").innerHTML;
-    const replacedString = htmlString.replaceAll(/\<\/*b\>/g, 'x');
+    const htmlString = document.querySelector('#plaintext-display').innerHTML;
+    const replacedString = htmlString.replaceAll(/<\/*b>/g, 'x');
     const stringArray = replacedString.split('\n');
     let lit = false;
     let characterPosition = 0;
@@ -187,7 +187,7 @@ export class Et3400 {
       O(V)erflow ${mpu.statusRegister.overflow}
       (C)arry ${mpu.statusRegister.carry}
     Memory : %o
-    `, MEM);
+    `, globalThis.MEM);
   }
 
   pressKey(keyCode) {

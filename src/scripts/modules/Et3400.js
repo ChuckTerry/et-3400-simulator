@@ -58,12 +58,7 @@ export class Et3400 {
     this.powered = true;
     this.microprocessor.HALT(1);
     document.querySelector('.power-led').classList.add('active');
-    // Initialize globals to undefined
-    const globals = ['doDisplayUpdate'];
-    const globalsLength = globals.length;
-    for (let index = 0; index < globalsLength; index++) {
-      globalThis[globals[index]] = undefined;
-    }
+    globalThis.doDisplayUpdate = undefined;
     this.clearDisplayLeds();
     // Initialize Decoded Instruction Array
     globalThis.DCD = new Array(256);
@@ -89,12 +84,7 @@ export class Et3400 {
     this.microprocessor.HALT(0);
     this.powered = false;
     document.querySelector('.power-led').classList.remove('active');
-    // Reset globals to undefined
-    const globals = ['doDisplayUpdate'];
-    const globalsLength = globals.length;
-    for (let index = 0; index < globalsLength; index++) {
-      globalThis[globals[index]] = undefined;
-    }
+    globalThis.doDisplayUpdate = undefined;
     // Clear LED states
     this.clearDisplayLeds();
     // Reset Decoded Instruction Array

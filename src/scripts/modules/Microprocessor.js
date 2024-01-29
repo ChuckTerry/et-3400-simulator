@@ -18,14 +18,14 @@ export class Microprocessor {
   constructor(encodedInstructionMatrix = Microprocessor.encodedInstructionMatrix.default) {
     this.accumulatorA = 0;
     this.accumulatorB = 0;
-    this.statusRegister = new StatusRegister();
-
+    this.operand = 0;
     this.programCounter = 0;
     this.stackPointer = 0;
     this.indexRegister = 0;
     this.addressRegister = 0;
-
     this.#fetchDecodeExecuteLoopTimer = 0;
+
+    this.statusRegister = new StatusRegister();
     this.decodedInstructionNameLookup = atob(encodedInstructionMatrix).split('\x00');
     this.#halt = 1;
   }
@@ -59,12 +59,12 @@ export class Microprocessor {
     return ARG;
   }
 
-  _cc__Carry(ARG, OPD, RES) {
-    this.statusRegister.carry = ((ARG = (ARG >> 7) & 1) & (OPD = (OPD >> 7) & 1)) | (OPD & (RES = ~((RES >> 7) & 1))) | (RES & ARG);
+  _cc__Carry(ARG, operand, RES) {
+    this.statusRegister.carry = ((ARG = (ARG >> 7) & 1) & (operand = (operand >> 7) & 1)) | (operand & (RES = ~((RES >> 7) & 1))) | (RES & ARG);
   }
 
-  _cc__Half(ARG, OPD, RES) {
-    this.statusRegister.half = ((ARG = (ARG >> 3) & 1) & (OPD = (OPD >> 3) & 1)) | (OPD & (RES = ~((RES >> 3) & 1))) | (RES & ARG);
+  _cc__Half(ARG, operand, RES) {
+    this.statusRegister.half = ((ARG = (ARG >> 3) & 1) & (operand = (operand >> 3) & 1)) | (operand & (RES = ~((RES >> 3) & 1))) | (RES & ARG);
   }
 
   _cc__NegativeOverflowZero(ARG) {
@@ -75,7 +75,7 @@ export class Microprocessor {
   }
 
   ABA() {
-    OPD = this.accumulatorB;
+    this.operand = this.accumulatorB;
     this.accumulatorA = this.ADD(this.accumulatorA);
   }
 
@@ -92,7 +92,7 @@ export class Microprocessor {
   }
 
   ADD(ARG) {
-    return this._cc_Overflow_NegativeZero(this.calculateOverflowStatus(ARG, OPD, globalThis.RES = ARG + OPD), globalThis.RES, this._cc__Half(ARG, OPD, globalThis.RES), this._cc__Carry(ARG, OPD, globalThis.RES));
+    return this._cc_Overflow_NegativeZero(this.calculateOverflowStatus(ARG, this.operand, globalThis.RES = ARG + this.operand), globalThis.RES, this._cc__Half(ARG, this.operand, globalThis.RES), this._cc__Carry(ARG, this.operand, globalThis.RES));
   }
 
   ADDA() {
@@ -108,7 +108,7 @@ export class Microprocessor {
   }
 
   AND(ARG) {
-    return this._cc_Overflow_NegativeZero(0, ARG & OPD);
+    return this._cc_Overflow_NegativeZero(0, ARG & this.operand);
   }
 
   ANDA() {
@@ -132,7 +132,7 @@ export class Microprocessor {
   }
 
   ASLM() {
-    this.WMB(this.addressRegister, this.ASL(OPD));
+    this.WMB(this.addressRegister, this.ASL(this.operand));
   }
 
   ASR(ARG) {
@@ -148,7 +148,7 @@ export class Microprocessor {
   }
 
   ASRM() {
-    this.WMB(this.addressRegister, this.ASR(OPD));
+    this.WMB(this.addressRegister, this.ASR(this.operand));
   }
 
   BCC() {
@@ -226,8 +226,8 @@ export class Microprocessor {
   }
 
   CBA() {
-    OPD = this.accumulatorB;
-    this.CMP(this.accumulatorA, OPD);
+    this.operand = this.accumulatorB;
+    this.CMP(this.accumulatorA, this.operand);
   }
 
   CLC() {
@@ -260,7 +260,7 @@ export class Microprocessor {
   }
 
   CMP(ARG) {
-    this._cc_CarryOverflow_NegativeZero(OPD > ARG ? 1 : 0, this.calculateOverflowStatus(ARG, OPD, ARG -= OPD), ARG);
+    this._cc_CarryOverflow_NegativeZero(this.operand > ARG ? 1 : 0, this.calculateOverflowStatus(ARG, this.operand, ARG -= this.operand), ARG);
   }
 
   CMPA() {
@@ -284,11 +284,11 @@ export class Microprocessor {
   }
 
   COMM() {
-    this.WMB(this.addressRegister, this.COM(OPD));
+    this.WMB(this.addressRegister, this.COM(this.operand));
   }
 
   CPX() {
-    return this._cc_Overflow_NegativeZero(this.calculateOverflowStatus(this.indexRegister, OPD, RES = this.indexRegister - OPD), RES);
+    return this._cc_Overflow_NegativeZero(this.calculateOverflowStatus(this.indexRegister, this.operand, RES = this.indexRegister - this.operand), RES);
   }
 
   DAA() {
@@ -326,7 +326,7 @@ export class Microprocessor {
   }
 
   DECM() {
-    this.WMB(this.addressRegister, this.DEC(OPD));
+    this.WMB(this.addressRegister, this.DEC(this.operand));
   }
 
   DES() {
@@ -343,7 +343,7 @@ export class Microprocessor {
   }
 
   EOR(ARG) {
-    return this._cc_Overflow_NegativeZero(0, ARG ^ OPD);
+    return this._cc_Overflow_NegativeZero(0, ARG ^ this.operand);
   }
 
   EORA() {
@@ -369,7 +369,7 @@ export class Microprocessor {
       opcode = et3400.microprocessor.GMB();
       const func = DCD[opcode];
       if (typeof func === 'function') {
-        OPD = func();
+        this.operand = func();
         et3400.microprocessor._lambda(opcode);
       }
     }
@@ -422,7 +422,7 @@ export class Microprocessor {
   }
 
   INCM() {
-    this.WMB(this.addressRegister, this.INC(OPD));
+    this.WMB(this.addressRegister, this.INC(this.operand));
   }
 
   INS() {
@@ -460,19 +460,19 @@ export class Microprocessor {
   IOP() { }
 
   LDAA() {
-    this.accumulatorA = this.ACC(OPD);
+    this.accumulatorA = this.ACC(this.operand);
   }
 
   LDAB() {
-    this.accumulatorB = this.ACC(OPD);
+    this.accumulatorB = this.ACC(this.operand);
   }
 
   LDS() {
-    this.stackPointer = this._cc__NegativeOverflowZero(OPD);
+    this.stackPointer = this._cc__NegativeOverflowZero(this.operand);
   }
 
   LDX() {
-    this.indexRegister = this._cc__NegativeOverflowZero(OPD);
+    this.indexRegister = this._cc__NegativeOverflowZero(this.operand);
   }
 
   LSR(ARG) {
@@ -488,7 +488,7 @@ export class Microprocessor {
   }
 
   LSRM() {
-    this.WMB(this.addressRegister, this.LSR(OPD));
+    this.WMB(this.addressRegister, this.LSR(this.operand));
   }
 
   NEG(ARG) {
@@ -504,13 +504,13 @@ export class Microprocessor {
   }
 
   NEGM() {
-    this.WMB(this.addressRegister, this.NEG(OPD));
+    this.WMB(this.addressRegister, this.NEG(this.operand));
   }
 
   NOP() { }
 
   ORA(ARG) {
-    return this._cc_Overflow_NegativeZero(0, ARG | OPD);
+    return this._cc_Overflow_NegativeZero(0, ARG | this.operand);
   }
 
   ORAA() {
@@ -594,7 +594,7 @@ export class Microprocessor {
   }
 
   ROLM() {
-    this.WMB(this.addressRegister, this.ROL(OPD));
+    this.WMB(this.addressRegister, this.ROL(this.operand));
   }
 
   ROR(ARG) {
@@ -610,7 +610,7 @@ export class Microprocessor {
   }
 
   RORM() {
-    this.WMB(this.addressRegister, this.ROR(OPD));
+    this.WMB(this.addressRegister, this.ROR(this.operand));
   }
 
   RTI() {
@@ -627,7 +627,7 @@ export class Microprocessor {
   }
 
   SBA() {
-    OPD = this.accumulatorB;
+    this.operand = this.accumulatorB;
     this.accumulatorA = this.SUB(this.accumulatorA, this.accumulatorB);
   }
 
@@ -678,7 +678,7 @@ export class Microprocessor {
   }
 
   SUB(ARG) {
-    return this._cc_CarryOverflow_NegativeZero(OPD > ARG ? 1 : 0, this.calculateOverflowStatus(ARG, OPD, RES = ARG - OPD), RES);
+    return this._cc_CarryOverflow_NegativeZero(this.operand > ARG ? 1 : 0, this.calculateOverflowStatus(ARG, this.operand, RES = ARG - this.operand), RES);
   }
 
   SUBA() {
@@ -711,8 +711,8 @@ export class Microprocessor {
     this.statusRegister.negative = (ARG >> 7) & 1;
   }
 
-  calculateOverflowStatus(ARG, OPD, RES) {
-    return ((ARG = (ARG >> 7) & 1) & ~(OPD = (OPD >> 7) & 1) & ~(RES = (RES >> 7) & 1)) | (~ARG & OPD & RES);
+  calculateOverflowStatus(ARG, operand, RES) {
+    return ((ARG = (ARG >> 7) & 1) & ~ (operand = (operand >> 7) & 1) & ~(RES = (RES >> 7) & 1)) | (~ARG & operand & RES);
   }
 
   calculateZeroStatus(ARG) {
@@ -736,7 +736,7 @@ export class Microprocessor {
   }
 
   TSTM() {
-    this.TST(OPD);
+    this.TST(this.operand);
   }
 
   TSX() {

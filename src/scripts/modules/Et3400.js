@@ -307,19 +307,20 @@ export class Et3400 {
     for (let rowNumber = 0; rowNumber < 3; ++rowNumber) {
       for (let ledNumber = 0; ledNumber < 6; ++ledNumber) {
         for (let columnNumber = 0; columnNumber < 4; ++columnNumber) {
-
           let number = rowNumber * 4 + columnNumber;
           if ((number < 4 && number !== 1) || number === 7) {
             string += ' ';
             continue;
           }
           const displayCharacter = '_|_.'.charAt(columnNumber);
-          const isLit = (ledNumber & (1 << character)) !== 0;
-          if (isLit === currentlyLit) {
-            return displayCharacter;
+          const shift = [0, 6, 0, 0, 1, 0, 5, 0, 2, 3, 4, 7][number];
+          const stillLit = (this.displayLeds[ledNumber] & (1 << shift)) !== 0;
+          if (stillLit === currentlyLit) {
+            string += displayCharacter;
+          } else {
+            currentlyLit = stillLit;
+            string += `<${currentlyLit ? '' : '/'}b>${displayCharacter}`;
           }
-          currentlyLit = isLit;
-          string += `<${currentlyLit ? '' : '/'}b>${displayCharacter}`;
         }
       }
       string += '\n';

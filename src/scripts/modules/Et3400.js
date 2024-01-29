@@ -18,6 +18,16 @@ export class Et3400 {
     this.microprocessor = new Microprocessor();
     this.addressingMethods = contstructAddressingMethodTable(this.microprocessor);
     this.displayLeds = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+
+    this.displayElements = [
+      document.querySelector('#display-h'),
+      document.querySelector('#display-i'),
+      document.querySelector('#display-n'),
+      document.querySelector('#display-z'),
+      document.querySelector('#display-v'),
+      document.querySelector('#display-c')
+    ];
+
     this.powered = false;
   }
 
@@ -158,7 +168,7 @@ export class Et3400 {
           lit = !lit;
         }
         if (className !== null) {
-          const segment = globalThis.segmentDisplays[Math.floor(characterPosition / 4)];
+          const segment = this.displayElements[Math.floor(characterPosition / 4)];
           const func = lit ? 'add' : 'remove';
           segment.classList[func](className);
         }

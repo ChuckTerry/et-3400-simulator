@@ -1,4 +1,5 @@
 import { Et3400 } from './modules/Et3400.js';
+import { keypad } from './modules/keypad.js';
 
 class PrintableProgramLine {
   constructor(address, opCode, operand, label, mnemonicInstruction, mnemonicOperand, comment = '') {
@@ -121,8 +122,8 @@ function registerListeners(document = globalThis.document) {
   powerButtons[0].addEventListener('mouseup', () => { et3400.powerButton() });
   powerButtons[1].addEventListener('mouseup', () => { et3400.powerButton() });
   // Loop Through Keys on Keypad
-  for (const property in Et3400.keypad) {
-    const keyData = Et3400.keypad[property];
+  for (const property in keypad) {
+    const keyData = keypad[property];
     // Register keyboard listeners on the document
     const element = document.querySelector(keyData.selector);
     const keyUpDownAbortController = new AbortController();

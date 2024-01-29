@@ -13,10 +13,11 @@ export function contstructAddressingMethodTable(microprocessor) {
       return 'Implied';
     },
     function relative() {
-      OPD = microprocessor.GMB();
-      const address = microprocessor.programCounter + OPD - (OPD > 128 ? 256 : 0);
+      const operand = microprocessor.GMB();
+      microprocessor.operand = operand;
+      const address = microprocessor.programCounter + operand - (operand > 128 ? 256 : 0);
       microprocessor.addressRegister = microprocessor.ADDR(address);
-      return OPD;
+      return operand;
     },
     function indexedByteRead() {
       const address = microprocessor.ADDR(microprocessor.indexRegister + microprocessor.GMB());

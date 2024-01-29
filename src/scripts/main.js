@@ -2,13 +2,6 @@ import { programs } from '../programs/programs.js';
 import { Et3400 } from './modules/Et3400.js';
 import { keypad } from './modules/keypad.js';
 
-
-class PrintableProgramLine {
-  constructor(address, opCode, operand, label, mnemonicInstruction, mnemonicOperand, comment = '') {
-  
-  }
-}
-
 class Memory {
 
   constructor(size = 0xFFFF, contentArray = new Array(size).fill(0)) {
@@ -168,6 +161,8 @@ window.addEventListener('load', () => {
   registerListeners();
   globalThis.et3400 = new Et3400();
   et3400.powerOff();
-  globalThis.loadProgram = et3400.loadProgram;
+  globalThis.loadProgram = function(...args) {
+    return et3400.loadProgram(...args);
+  }
   globalThis.programs = programs;
 });

@@ -49,7 +49,7 @@ export class Et3400 {
     this.microprocessor.HALT(1);
     document.querySelector('.power-led').classList.add('active');
     // Initialize globals to undefined
-    const globals = ['OPD', 'doDisplayUpdate'];
+    const globals = ['doDisplayUpdate'];
     const globalsLength = globals.length;
     for (let index = 0; index < globalsLength; index++) {
       globalThis[globals[index]] = undefined;
@@ -80,7 +80,7 @@ export class Et3400 {
     this.powered = false;
     document.querySelector('.power-led').classList.remove('active');
     // Reset globals to undefined
-    const globals = ['OPD', 'doDisplayUpdate'];
+    const globals = ['doDisplayUpdate'];
     const globalsLength = globals.length;
     for (let index = 0; index < globalsLength; index++) {
       globalThis[globals[index]] = undefined;
@@ -178,7 +178,7 @@ export class Et3400 {
     Accumulator A ${accumulatorA}  0x${padWordHex(accumulatorA)}  0b${padByteBinary(accumulatorA)}
     Accumulator B ${accumulatorB}  0x${padWordHex(accumulatorB)}  0b${padByteBinary(accumulatorB)}
     Address ${addressRegister}  0x${padWordHex(addressRegister)}  0b${padByteBinary(addressRegister)}
-    OPD ${OPD}
+    Operand ${mpu.operand}
     Condition Codes Register:
       (H)alf ${mpu.statusRegister.half}
       (I)nterrupt ${mpu.statusRegister.interrupt}

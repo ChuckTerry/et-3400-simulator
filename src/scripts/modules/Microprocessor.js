@@ -364,12 +364,13 @@ export class Microprocessor {
     if (this.#halt === 0) {
       return;
     }
-    for (let clock = 0; clock < 20000; clock += CYC[OPC]) {
-      OPC = et3400.microprocessor.GMB();
-      const func = DCD[OPC];
+    let opcode = 0;
+    for (let clock = 0; clock < 20000; clock += CYC[opcode]) {
+      opcode = et3400.microprocessor.GMB();
+      const func = DCD[opcode];
       if (typeof func === 'function') {
         OPD = func();
-        et3400.microprocessor._lambda(OPC);
+        et3400.microprocessor._lambda(opcode);
       }
     }
     this.#fetchDecodeExecuteLoopTimer = window.setTimeout(() => this.fetchDecodeExecute(), 50);

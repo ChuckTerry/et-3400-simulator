@@ -364,7 +364,7 @@ export class Microprocessor {
     if (this.#halt === 0) {
       return;
     }
-    for (CLK = 0; CLK < 20000; CLK += CYC[OPC]) {
+    for (let clock = 0; clock < 20000; clock += CYC[OPC]) {
       OPC = et3400.microprocessor.GMB();
       const func = DCD[OPC];
       if (typeof func === 'function') {
@@ -561,7 +561,6 @@ export class Microprocessor {
     this.WMB(0xC003, 0xFF);
     this.WMB(0xC005, 0xFF);
     this.WMB(0xC006, 0xFF);
-    CLK = 0;
     this.accumulatorA = 0;
     this.accumulatorB = 0;
     this.indexRegister = 0;

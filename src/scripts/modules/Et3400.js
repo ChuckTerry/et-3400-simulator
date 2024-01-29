@@ -49,7 +49,7 @@ export class Et3400 {
     this.microprocessor.HALT(1);
     document.querySelector('.power-led').classList.add('active');
     // Initialize globals to undefined
-    const globals = ['CLK', 'OPC', 'OPD', 'doDisplayUpdate'];
+    const globals = ['OPC', 'OPD', 'doDisplayUpdate'];
     const globalsLength = globals.length;
     for (let index = 0; index < globalsLength; index++) {
       globalThis[globals[index]] = undefined;
@@ -80,7 +80,7 @@ export class Et3400 {
     this.powered = false;
     document.querySelector('.power-led').classList.remove('active');
     // Reset globals to undefined
-    const globals = ['CLK', 'OPC', 'OPD', 'doDisplayUpdate'];
+    const globals = ['OPC', 'OPD', 'doDisplayUpdate'];
     const globalsLength = globals.length;
     for (let index = 0; index < globalsLength; index++) {
       globalThis[globals[index]] = undefined;

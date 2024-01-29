@@ -13,7 +13,8 @@ function hex2binary(string) {
 }
 
 export class Et3400 {
-
+  #monitorProgram;
+  
   constructor() {
     this.microprocessor = new Microprocessor();
     this.addressingMethods = contstructAddressingMethodTable(this.microprocessor);
@@ -28,6 +29,7 @@ export class Et3400 {
       document.querySelector('#display-c')
     ];
 
+    this.initialize();
     this.powered = false;
   }
 
@@ -69,23 +71,10 @@ export class Et3400 {
     document.querySelector('.power-led').classList.add('active');
     globalThis.doDisplayUpdate = undefined;
     this.clearDisplayLeds();
-    // Initialize Decoded Instruction Array
-    globalThis.DCD = new Array(256);
-    // Initialize Instruction Cycle Count Array
-    globalThis.CYC = new Array(256);
     // Initialize Memory as a Zero-Filled aArray
     globalThis.MEM = new Array(0x10000).fill(0);
     // Prepare Monitor Program
-    const et3400Monitor = atob('jgDrvf2NTmc+AD7nzgDL3/KG/8YINlom/Jfuhhk2hvw2vf30fQDuJwiBDyf0gQsn8N/szv+0CAhKKvumATamADbe7JbuOc4A4ob/xgQICKEAJgShAScOWibzvf2NAEc+Dg6gTDnf7o0dH4WNCEw53+6NEz2djUXe7sYCfv0l3+6NBHe9IO/OwS9+/lDe8ggICAgICI3ZjSRPxga9/jpaJvqNGb3+a8YEMO4IpgA2NoY/pwBaJvLO/M5+/vzf7M7Bb9/w3uw5zgDujbPe7jkwn/KmBiYCagVKpwbmBdfsl+0MjgDZxgQyMjDuCJzsJgENpwBaJvEkrN7sjcHf7s4A7sYCjQPuAFp+/XuNuo3rjQsIIPmNsQkICAkg3l0nBjaNIo0CMjk3hghYvf46Wib6M40RN73+CacACFom9zMXCUom/Dk3lvGLIFom+5fxMzmNOzCVIBaNNXcNDf0gEI0tdw0NnyAJjSVnjUxMXExMXIsC3vIISib8jQJMOTemAL3+IAhaJvczFwlKJvw5X87Bb37+UL38vN7yxiBP5QEnAUy9/ihWJvRMOY3iW+fW88sHmfKNbBdfjWiGATk39sADtsAGSEhIWUhZSFk39sAFxB8bM0NT3+zO/6URJxEkBjYXM87/rV0mBghIIvwnAQymAN7sMzk3xiCNwiX6Wib5xiCNuST6Wib5MzmN6Y0bSEhISDcWjd+NERszNo2fJfwyOTZEREREjQEyNoQP3+zO/5UISir8pgCNBDI53+ze8DdJScYQSacACVom+d/w3uwzOd/wMO4AMTGmAI3fCE0q+E9uAI0H3vLuBn78+Z/u3vKmBzamBjbuBoY/NjamAjamATamADYWzv91CMAIJPumAEZcJvwyNiUegTAkBIEgJBSBYCURgY0nDIS9gYwnBIQwgTDC/1xcJ3AwJQLnAYYBwQIuBicCpwGnAk/rBqkFpwXnBt7ypwbnB8YGMjaEz4GNMidIgW4nW4F+J16BOSdigTsnbIE/J26vBjbO/wWGfpf03/We8jsw7gUIT1+c7iYMCe4ACeYAKgFDMO4F6wGpADCnBecGCd/ynu45gY0mAoZfgD82CQnf8qYDpwEIWir4IJAzT+sFqQSMMjOnBucHINUICN/ypgOnBQlaLvggyQhaKvwgwaYHpwAJWir4ihCnAcb6hgAg1JwAPK9AAACsZBJkEmQQZBARARAEEAAQABENEAwQDBAMfjBteTNbX3B/e3cfTj1PRwcKDQIFCAsOAwYJDA8AAQT8Rf1V/V39Zf1P/ZP9qPyW/mL8Rv0K/Rj9G/yM/RP9Fv////////////////////////////////////////////8A9wD0AP38AA==');
-    const encodedDTA = '2023202020202323434323232323232323232020212023232023202320202020442044444444444444444444444444444343434343434343205320A3202093C32320202323202323232323202323202323202023232023232323232023232023752020757520757575757520757547776D20206D6D206D6D6D6D6D206D6D3F6F2828282028282821282828283C843C21393939203939394B393939394A214A5B555555205555556755555555668766774D4D4D204D4D4D5F4D4D4D4D5E9F5E6F28282820282828212828282820203C21393939203939394B3939393920214A5B555555205555556755555555202066774D4D4D204D4D4D5F4D4D4D4D20205E6F';
-    const DTA = hex2binary(encodedDTA);
-    for (let index = 0; index < 256; ++index) {
-      // Content-Addressable Memory
-      const CAM = DTA.charCodeAt(index);
-      globalThis.CYC[index] = CAM >> 4;
-      globalThis.DCD[index] = this.addressingMethods[CAM & 0x0F];
-    }
-    this.loadProgram(0xFC00, et3400Monitor);
+    this.loadProgram(0xFC00, this.#monitorProgram);
     this.reset();
   }
 
@@ -96,12 +85,23 @@ export class Et3400 {
     globalThis.doDisplayUpdate = undefined;
     // Clear LED states
     this.clearDisplayLeds();
-    // Reset Decoded Instruction Array
-    globalThis.DCD = new Array(256);
-    // Reset Instruction Cycle Count Array
-    globalThis.CYC = new Array(256);
     // Reset Memory
-    globalThis.MEM = new Array(0x10000);
+    globalThis.MEM = globalThis.MEM.fill(0);
+  }
+
+  initialize() {
+    this.#monitorProgram = atob('jgDrvf2NTmc+AD7nzgDL3/KG/8YINlom/Jfuhhk2hvw2vf30fQDuJwiBDyf0gQsn8N/szv+0CAhKKvumATamADbe7JbuOc4A4ob/xgQICKEAJgShAScOWibzvf2NAEc+Dg6gTDnf7o0dH4WNCEw53+6NEz2djUXe7sYCfv0l3+6NBHe9IO/OwS9+/lDe8ggICAgICI3ZjSRPxga9/jpaJvqNGb3+a8YEMO4IpgA2NoY/pwBaJvLO/M5+/vzf7M7Bb9/w3uw5zgDujbPe7jkwn/KmBiYCagVKpwbmBdfsl+0MjgDZxgQyMjDuCJzsJgENpwBaJvEkrN7sjcHf7s4A7sYCjQPuAFp+/XuNuo3rjQsIIPmNsQkICAkg3l0nBjaNIo0CMjk3hghYvf46Wib6M40RN73+CacACFom9zMXCUom/Dk3lvGLIFom+5fxMzmNOzCVIBaNNXcNDf0gEI0tdw0NnyAJjSVnjUxMXExMXIsC3vIISib8jQJMOTemAL3+IAhaJvczFwlKJvw5X87Bb37+UL38vN7yxiBP5QEnAUy9/ihWJvRMOY3iW+fW88sHmfKNbBdfjWiGATk39sADtsAGSEhIWUhZSFk39sAFxB8bM0NT3+zO/6URJxEkBjYXM87/rV0mBghIIvwnAQymAN7sMzk3xiCNwiX6Wib5xiCNuST6Wib5MzmN6Y0bSEhISDcWjd+NERszNo2fJfwyOTZEREREjQEyNoQP3+zO/5UISir8pgCNBDI53+ze8DdJScYQSacACVom+d/w3uwzOd/wMO4AMTGmAI3fCE0q+E9uAI0H3vLuBn78+Z/u3vKmBzamBjbuBoY/NjamAjamATamADYWzv91CMAIJPumAEZcJvwyNiUegTAkBIEgJBSBYCURgY0nDIS9gYwnBIQwgTDC/1xcJ3AwJQLnAYYBwQIuBicCpwGnAk/rBqkFpwXnBt7ypwbnB8YGMjaEz4GNMidIgW4nW4F+J16BOSdigTsnbIE/J26vBjbO/wWGfpf03/We8jsw7gUIT1+c7iYMCe4ACeYAKgFDMO4F6wGpADCnBecGCd/ynu45gY0mAoZfgD82CQnf8qYDpwEIWir4IJAzT+sFqQSMMjOnBucHINUICN/ypgOnBQlaLvggyQhaKvwgwaYHpwAJWir4ihCnAcb6hgAg1JwAPK9AAACsZBJkEmQQZBARARAEEAAQABENEAwQDBAMfjBteTNbX3B/e3cfTj1PRwcKDQIFCAsOAwYJDA8AAQT8Rf1V/V39Zf1P/ZP9qPyW/mL8Rv0K/Rj9G/yM/RP9Fv////////////////////////////////////////////8A9wD0AP38AA==');
+    const encodedDTA = '2023202020202323434323232323232323232020212023232023202320202020442044444444444444444444444444444343434343434343205320A3202093C32320202323202323232323202323202323202023232023232323232023232023752020757520757575757520757547776D20206D6D206D6D6D6D6D206D6D3F6F2828282028282821282828283C843C21393939203939394B393939394A214A5B555555205555556755555555668766774D4D4D204D4D4D5F4D4D4D4D5E9F5E6F28282820282828212828282820203C21393939203939394B3939393920214A5B555555205555556755555555202066774D4D4D204D4D4D5F4D4D4D4D20205E6F';
+    const DTA = hex2binary(encodedDTA);
+    globalThis.CYC = [];
+    globalThis.DCD = [];
+    for (let index = 0; index < 256; ++index) {
+      // Content-Addressable Memory
+      const CAM = DTA.charCodeAt(index);
+      globalThis.CYC[index] = CAM >> 4;
+      globalThis.DCD[index] = this.addressingMethods[CAM & 0x0F];
+    }
+    globalThis.MEM = [];
   }
 
   clearDisplayLeds() {
@@ -181,7 +181,7 @@ export class Et3400 {
     const programCounter = mpu.programCounter;
     const accumulatorA = mpu.accumulatorA;
     const accumulatorB = mpu.accumulatorB;
-    const addressRegister = this.microprocessor.addressRegister;
+    const addressRegister = mpu.addressRegister;
     console.debug(`
     Program Counter ${programCounter}  0x${padWordHex(programCounter)}  0b${padByteBinary(programCounter)}
     Accumulator A ${accumulatorA}  0x${padWordHex(accumulatorA)}  0b${padByteBinary(accumulatorA)}

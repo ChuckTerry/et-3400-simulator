@@ -235,11 +235,11 @@ export class Et3400 {
   }
 
   powerOn() {
-    this.microprocessor.HALT(1);
     this.powered = true;
+    this.microprocessor.HALT(1);
     document.querySelector('.power-led').classList.add('active');
     // Initialize globals to undefined
-    const globals = ['CLK', 'OPC', 'OPD', 'bOn', 'doDisplayUpdate'];
+    const globals = ['CLK', 'OPC', 'OPD', 'doDisplayUpdate'];
     const globalsLength = globals.length;
     for (let index = 0; index < globalsLength; index++) {
       globalThis[globals[index]] = undefined;
@@ -271,11 +271,10 @@ export class Et3400 {
 
   powerOff() {
     this.microprocessor.HALT(0);
-    // if (globalThis.TMR) clearTimeout(TMR);
     this.powered = false;
     document.querySelector('.power-led').classList.remove('active');
     // Reset globals to undefined
-    const globals = ['CLK', 'OPC', 'OPD', 'bOn', 'doDisplayUpdate'];
+    const globals = ['CLK', 'OPC', 'OPD', 'doDisplayUpdate'];
     const globalsLength = globals.length;
     for (let index = 0; index < globalsLength; index++) {
       globalThis[globals[index]] = undefined;
@@ -304,11 +303,23 @@ export class Et3400 {
 
   updateLedDisplay() {
     let string = '';
-    bOn = 0;
+    let currentlyLit = false;
     for (let rowNumber = 0; rowNumber < 3; ++rowNumber) {
       for (let ledNumber = 0; ledNumber < 6; ++ledNumber) {
         for (let columnNumber = 0; columnNumber < 4; ++columnNumber) {
-          string += this.getSegment(this.displayLeds[ledNumber], columnNumber, rowNumber);
+
+          let number = rowNumber * 4 + columnNumber;
+          if ((number < 4 && number !== 1) || number === 7) {
+            string += ' ';
+            continue;
+          }
+          const displayCharacter = '_|_.'.charAt(columnNumber);
+          const isLit = (ledNumber & (1 << character)) !== 0;
+          if (isLit === currentlyLit) {
+            return displayCharacter;
+          }
+          currentlyLit = isLit;
+          string += `<${currentlyLit ? '' : '/'}b>${displayCharacter}`;
         }
       }
       string += '\n';
@@ -319,22 +330,6 @@ export class Et3400 {
       globalThis.popout.postMessage(`updateDisplay:${string}`, '*');
     }
     doDisplayUpdate = false;
-  }
-
-  getSegment(ledNumber, columnNumber, rowNumber) {
-    let number = rowNumber * 4 + columnNumber;
-    // Segment Number x Display Position
-    let character = ' 6  105 2347'.charAt(number);
-    if (character != ' ') {
-      number = '_||_||_.'.charAt(character);
-      character = (ledNumber & (1 << character)) !== 0;
-      character = character == bOn
-        ? number
-        : (bOn = character)
-          ? '<b>' + number
-          : '</b>' + number;
-    }
-    return character;
   }
 
   updateSimulatorDisplay() {

@@ -31,6 +31,15 @@ export class Et3400 {
     this.powered = false;
   }
 
+  loadHex(address, string) {
+    const length = string.length;
+    this.microprocessor.HALT(0);
+    for (let index = 0; index < length; index += 2) {
+      globalThis.MEM[address++] = parseInt(string.substr(index, 2), 16);
+    }
+    this.microprocessor.HALT(1);
+  }
+
   loadProgram(address, string) {
     this.microprocessor.programCounter = address;
     const length = string.length;

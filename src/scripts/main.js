@@ -121,8 +121,11 @@ window.addEventListener('load', () => {
   registerListeners();
   globalThis.et3400 = new Et3400();
   globalThis.et3400.powerOff();
-  globalThis.loadProgram = function(...args) {
-    return globalThis.et3400.loadProgram(...args);
+  globalThis.loadHex = function(...args) {
+    if (args.length === 1) {
+      return globalThis.et3400.loadHex(0, args[0]);
+    }
+    return globalThis.et3400.loadHex(...args);
   };
   globalThis.programs = programs;
 });

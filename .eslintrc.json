@@ -9,9 +9,21 @@
         "sourceType": "module"
     },
     "rules": {
+        "accessor-pairs": [
+            "error",
+            {
+                "getWithoutSet": true,
+                "setWithoutGet": true
+            }
+        ],
+        
         "indent": [
             "error",
             2
+        ],
+        "yoda": [
+            "error",
+            "always"
         ],
         "linebreak-style": [
             "error",
@@ -22,6 +34,10 @@
             "single"
         ],
         "semi": [
+            "error",
+            "always"
+        ],
+        "constructor-super": [
             "error",
             "always"
         ]

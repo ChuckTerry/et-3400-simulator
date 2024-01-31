@@ -21,10 +21,6 @@
             "error",
             2
         ],
-        "yoda": [
-            "error",
-            "always"
-        ],
         "linebreak-style": [
             "error",
             "windows"
@@ -38,8 +34,7 @@
             "always"
         ],
         "constructor-super": [
-            "error",
-            "always"
+            "error"
         ]
     }
 }

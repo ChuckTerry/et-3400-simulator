@@ -1,8 +1,15 @@
 import { Microprocessor } from './Microprocessor.js';
 import { contstructAddressingMethodTable } from './addressingMethods.js';
 import { padByteBinary, padWordHex } from './util.js';
+import { ROM } from '../../programs/heathkit/rom.js';
 
 
+/**
+ * Converts a hexadecimal string to binary.
+ * 
+ * @param {string} string - The hexadecimal string to convert.
+ * @returns {string} The binary representation of the hexadecimal string.
+ */
 function hex2binary(string) {
   const length = string.length;
   let returnValue = '';
@@ -12,14 +19,20 @@ function hex2binary(string) {
   return returnValue;
 }
 
+/**
+ * Represents the ET-3400 microprocessor simulator.
+ */
 export class Et3400 {
   #monitorProgram;
   
+  /** @constructor */
   constructor() {
     this.microprocessor = new Microprocessor();
     this.addressingMethods = contstructAddressingMethodTable(this.microprocessor);
+    // Holds the current state of each seven-segment display
     this.displayLeds = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
 
+    // Holds the DOM elements for each seven-segment display
     this.displayElements = [
       document.querySelector('#display-h'),
       document.querySelector('#display-i'),
@@ -33,43 +46,74 @@ export class Et3400 {
     this.powered = false;
   }
 
+
+  /**
+   * Loads a hexadecimal string into memory starting at the specified address.
+   * @param {number} address - The starting address in memory.
+   * @param {string} string - The hexadecimal string to load into memory.
+   */
   loadHex(address, string) {
     const length = string.length;
+    // Set the HALT flag to prevent the microprocessor from running while memory is being modified
     this.microprocessor.HALT(0);
+    // Load the string into memory, two characters at a time
     for (let index = 0; index < length; index += 2) {
       globalThis.MEM[address++] = parseInt(string.substr(index, 2), 16);
     }
+    // Clear the HALT flag to allow the microprocessor to run again
     this.microprocessor.HALT(1);
   }
 
+  
+  /**
+   * Loads a program into the ET3400 microprocessor. This method uses internal
+   * microprocessor methods to load the program into memory.  As Such, it should
+   * Only be used during initialization for the Monitor Program. For all other
+   * purposes, the loadHex method should be used instead.
+   * @param {number} address - The starting address of the program.
+   * @param {string} string - The program code as a string.
+   */
   loadProgram(address, string) {
+    // Set the program counter to the specified address
     this.microprocessor.programCounter = address;
     const length = string.length;
+    // Load the string into memory
     for (let index = 0; index < length; index++) {
       this.microprocessor.SMB(string.charCodeAt(index));
     }
   }
 
+  /**
+   * Toggles the power state of the ET-3400 simulator.
+   */
   powerButton() {
+    // Flip the power state
     const functionName = this.powered ? 'powerOff' : 'powerOn';
     this[functionName]();
     // Change shading to indicate switch flip on power buttons
     const buttons = document.querySelectorAll('.power-button');
-    buttons.forEach(element => {
+    for (let index = 0; index < 2; index++) {
+      const element = buttons[index];
       element.innerText = element.innerText === 'O' ? 'II' : 'O';
       element.classList.toggle('active');
-    });
+    }
     // Update Power LED on Simulator
     const simulatorLight = document.querySelector('#Power_LED');
     const func = this.powered ? 'add' : 'remove';
     simulatorLight.classList[func]('power-on');
   }
 
+  /**
+   * Turns on the ET-3400 simulator.
+   */
   powerOn() {
     this.powered = true;
-    this.microprocessor.HALT(1);
-    document.querySelector('.power-led').classList.add('active');
+    // Clear the display update flag
     globalThis.doDisplayUpdate = undefined;
+    this.microprocessor.HALT(1);
+    // Update Power LED on Simulator and add the glow effect
+    document.querySelector('.power-led').classList.add('active');
+    document.querySelector('.power-led-glow')?.classList.remove('hidden');
     this.clearDisplayLeds();
     // Initialize Memory as a Zero-Filled aArray
     globalThis.MEM = new Array(0x10000).fill(0);
@@ -78,19 +122,25 @@ export class Et3400 {
     this.reset();
   }
 
+  /**
+   * Turns off the ET-3400 simulator.
+   */
   powerOff() {
     this.microprocessor.HALT(0);
     this.powered = false;
     document.querySelector('.power-led').classList.remove('active');
+    document.querySelector('.power-led-glow')?.classList.add('hidden');
     globalThis.doDisplayUpdate = undefined;
-    // Clear LED states
     this.clearDisplayLeds();
     // Reset Memory
     globalThis.MEM = globalThis.MEM.fill(0);
   }
 
+  /**
+   * Initializes the ET3400 module.
+   */
   initialize() {
-    this.#monitorProgram = atob('jgDrvf2NTmc+AD7nzgDL3/KG/8YINlom/Jfuhhk2hvw2vf30fQDuJwiBDyf0gQsn8N/szv+0CAhKKvumATamADbe7JbuOc4A4ob/xgQICKEAJgShAScOWibzvf2NAEc+Dg6gTDnf7o0dH4WNCEw53+6NEz2djUXe7sYCfv0l3+6NBHe9IO/OwS9+/lDe8ggICAgICI3ZjSRPxga9/jpaJvqNGb3+a8YEMO4IpgA2NoY/pwBaJvLO/M5+/vzf7M7Bb9/w3uw5zgDujbPe7jkwn/KmBiYCagVKpwbmBdfsl+0MjgDZxgQyMjDuCJzsJgENpwBaJvEkrN7sjcHf7s4A7sYCjQPuAFp+/XuNuo3rjQsIIPmNsQkICAkg3l0nBjaNIo0CMjk3hghYvf46Wib6M40RN73+CacACFom9zMXCUom/Dk3lvGLIFom+5fxMzmNOzCVIBaNNXcNDf0gEI0tdw0NnyAJjSVnjUxMXExMXIsC3vIISib8jQJMOTemAL3+IAhaJvczFwlKJvw5X87Bb37+UL38vN7yxiBP5QEnAUy9/ihWJvRMOY3iW+fW88sHmfKNbBdfjWiGATk39sADtsAGSEhIWUhZSFk39sAFxB8bM0NT3+zO/6URJxEkBjYXM87/rV0mBghIIvwnAQymAN7sMzk3xiCNwiX6Wib5xiCNuST6Wib5MzmN6Y0bSEhISDcWjd+NERszNo2fJfwyOTZEREREjQEyNoQP3+zO/5UISir8pgCNBDI53+ze8DdJScYQSacACVom+d/w3uwzOd/wMO4AMTGmAI3fCE0q+E9uAI0H3vLuBn78+Z/u3vKmBzamBjbuBoY/NjamAjamATamADYWzv91CMAIJPumAEZcJvwyNiUegTAkBIEgJBSBYCURgY0nDIS9gYwnBIQwgTDC/1xcJ3AwJQLnAYYBwQIuBicCpwGnAk/rBqkFpwXnBt7ypwbnB8YGMjaEz4GNMidIgW4nW4F+J16BOSdigTsnbIE/J26vBjbO/wWGfpf03/We8jsw7gUIT1+c7iYMCe4ACeYAKgFDMO4F6wGpADCnBecGCd/ynu45gY0mAoZfgD82CQnf8qYDpwEIWir4IJAzT+sFqQSMMjOnBucHINUICN/ypgOnBQlaLvggyQhaKvwgwaYHpwAJWir4ihCnAcb6hgAg1JwAPK9AAACsZBJkEmQQZBARARAEEAAQABENEAwQDBAMfjBteTNbX3B/e3cfTj1PRwcKDQIFCAsOAwYJDA8AAQT8Rf1V/V39Zf1P/ZP9qPyW/mL8Rv0K/Rj9G/yM/RP9Fv////////////////////////////////////////////8A9wD0AP38AA==');
+    this.#monitorProgram = ROM;
     const encodedDTA = '2023202020202323434323232323232323232020212023232023202320202020442044444444444444444444444444444343434343434343205320A3202093C32320202323202323232323202323202323202023232023232323232023232023752020757520757575757520757547776D20206D6D206D6D6D6D6D206D6D3F6F2828282028282821282828283C843C21393939203939394B393939394A214A5B555555205555556755555555668766774D4D4D204D4D4D5F4D4D4D4D5E9F5E6F28282820282828212828282820203C21393939203939394B3939393920214A5B555555205555556755555555202066774D4D4D204D4D4D5F4D4D4D4D20205E6F';
     const DTA = hex2binary(encodedDTA);
     globalThis.CYC = [];
@@ -104,6 +154,9 @@ export class Et3400 {
     globalThis.MEM = [];
   }
 
+  /**
+   * Sets all display LEDs values to 0x00, then updates the displays.
+   */
   clearDisplayLeds() {
     for (let index = 0; index < 6; index++) {
       this.displayLeds[index] = 0x00;
@@ -111,11 +164,17 @@ export class Et3400 {
     this.updateLedDisplay();
   }
 
+  /**
+   * Resets the ET3400 simulator.
+   */
   reset() {
     this.updateLedDisplay();
     this.microprocessor.reset();
   }
 
+  /**
+   * Updates the LED display; called after the hexadecimal values are updated.
+   */
   updateLedDisplay() {
     let string = '';
     let currentlyLit = false;
@@ -148,6 +207,9 @@ export class Et3400 {
     globalThis.doDisplayUpdate = false;
   }
 
+  /**
+   * Updates the simulator display to match the plaintext display.
+   */
   updateSimulatorDisplay() {
     const htmlString = document.querySelector('#plaintext-display').innerHTML;
     const replacedString = htmlString.replaceAll(/<\/*b>/g, 'x');
@@ -176,6 +238,9 @@ export class Et3400 {
     }
   }
 
+  /**
+   * Logs the current state of the ET3400 microprocessor for debugging purposes.
+   */
   debugState() {
     const mpu = this.microprocessor;
     const programCounter = mpu.programCounter;
@@ -199,6 +264,10 @@ export class Et3400 {
     `, globalThis.MEM);
   }
 
+  /**
+   * Presses a key on the ET3400 simulator.
+   * @param {number} keyCode - The key code of the pressed key.
+   */
   pressKey(keyCode) {
     if (keyCode === null) {
       return;
@@ -209,6 +278,10 @@ export class Et3400 {
     this.microprocessor.WMB(address, this.microprocessor.RMB(address) & keyDown);
   }
 
+  /**
+   * Releases a key on the ET-3400 simulator.
+   * @param {number} keyCode - The key code of the released key.
+   */
   releaseKey(keyCode) {
     if (keyCode === null) {
       return this.reset();

@@ -1,15 +1,24 @@
 {
-  "name": "et-3400-simulator",
-  "version": "1.3.0",
+  "author": {
+    "name": "Chuck Terry",
+    "email": "Chuck.Terry@Outlook.com",
+    "url": "https://chuckterry.me"
+  },
+  "bugs": {
+    "url": "https://github.com/ChuckTerry/ET-3400-Simulator/issues",
+    "email": "Chuck.Terry@Outlook.com"
+  },
   "description": "A browser-based interactive simulator for the Heathkit® ET-3400 Microprocessor Trainer.",
-  "main": "index.html",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "devDependencies": {
+    "eslint": "^8.56.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ChuckTerry/ET-3400-Simulator.git"
-  },
+  "funding":[
+    {
+      "type": "individual",
+      "url": "https://github.com/sponsors/ChuckTerry"
+    }
+  ],
+  "homepage": "https:chuckterry.me/ET-3400-Simulator",
   "keywords": [
     "Heathkit",
     "ET-3400",
@@ -22,18 +31,16 @@
     "Machine Language",
     "Programming"
   ],
-  "author": {
-    "name": "Chuck Terry",
-    "email": "Chuck.Terry@Outlook.com",
-    "url": "https://chuckterry.me"
-  },
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ChuckTerry/ET-3400-Simulator/issues",
-    "email": "Chuck.Terry@Outlook.com"
+  "main": "index.html",
+  "name": "et-3400-simulator",
+  
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChuckTerry/ET-3400-Simulator.git"
   },
-  "homepage": "https:chuckterry.me/ET-3400-Simulator",
-  "devDependencies": {
-    "eslint": "^8.56.0"
-  }
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.3.0"
 }

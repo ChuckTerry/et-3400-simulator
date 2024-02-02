@@ -15,7 +15,7 @@ export class Microprocessor {
     RST: 0xFFFE
   };
 
-  constructor(encodedInstructionMatrix = Microprocessor.encodedInstructionMatrix.default) {
+  constructor(et3400, encodedInstructionMatrix = Microprocessor.encodedInstructionMatrix.default) {
     this.accumulatorA = 0;
     this.accumulatorB = 0;
     this.operand = 0;
@@ -23,6 +23,8 @@ export class Microprocessor {
     this.stackPointer = 0;
     this.indexRegister = 0;
     this.addressRegister = 0;
+    this.result = 0;
+    this.et3400 = et3400;
     this.#fetchDecodeExecuteLoopTimer = 0;
 
     this.statusRegister = new StatusRegister();
@@ -92,7 +94,7 @@ export class Microprocessor {
   }
 
   ADD(ARG) {
-    return this._cc_Overflow_NegativeZero(this.calculateOverflowStatus(ARG, this.operand, globalThis.RES = ARG + this.operand), globalThis.RES, this._cc__Half(ARG, this.operand, globalThis.RES), this._cc__Carry(ARG, this.operand, globalThis.RES));
+    return this._cc_Overflow_NegativeZero(this.calculateOverflowStatus(ARG, this.operand, this.result = ARG + this.operand), this.result, this._cc__Half(ARG, this.operand, this.result), this._cc__Carry(ARG, this.operand, this.result));
   }
 
   ADDA() {
@@ -288,7 +290,7 @@ export class Microprocessor {
   }
 
   CPX() {
-    return this._cc_Overflow_NegativeZero(this.calculateOverflowStatus(this.indexRegister, this.operand, RES = this.indexRegister - this.operand), RES);
+    return this._cc_Overflow_NegativeZero(this.calculateOverflowStatus(this.indexRegister, this.operand, this.result = this.indexRegister - this.operand), this.result);
   }
 
   DAA() {
@@ -359,18 +361,18 @@ export class Microprocessor {
       window.clearTimeout(this.#fetchDecodeExecuteLoopTimer);
     }
     if (doDisplayUpdate) {
-      et3400.updateLedDisplay();
+      this.et3400.updateLedDisplay();
     }
     if (this.#halt === 0) {
       return;
     }
     let opcode = 0;
     for (let clock = 0; clock < 20000; clock += CYC[opcode]) {
-      opcode = et3400.microprocessor.GMB();
+      opcode = this.et3400.microprocessor.GMB();
       const func = DCD[opcode];
       if (typeof func === 'function') {
         this.operand = func();
-        et3400.microprocessor._lambda(opcode);
+        this.et3400.microprocessor._lambda(opcode);
       }
     }
     this.#fetchDecodeExecuteLoopTimer = window.setTimeout(() => this.fetchDecodeExecute(), 50);
@@ -678,7 +680,7 @@ export class Microprocessor {
   }
 
   SUB(ARG) {
-    return this._cc_CarryOverflow_NegativeZero(this.operand > ARG ? 1 : 0, this.calculateOverflowStatus(ARG, this.operand, RES = ARG - this.operand), RES);
+    return this._cc_CarryOverflow_NegativeZero(this.operand > ARG ? 1 : 0, this.calculateOverflowStatus(ARG, this.operand, this.result = ARG - this.operand), this.result);
   }
 
   SUBA() {
@@ -760,17 +762,17 @@ export class Microprocessor {
   WMB(address, byte) {
     if (address >= 0xC110 && address <= 0xC16F) {
       const ledNumber = 5 - ((address - 0xC110) >> 4);
-      const current = et3400.displayLeds[ledNumber];
+      const current = this.et3400.displayLeds[ledNumber];
       const shifted = 1 << (address & 0x07);
       const updated = (byte & 1) ? current | shifted : current & (255 - shifted);
       if (updated !== current) {
-        et3400.displayLeds[ledNumber] = updated;
+        this.et3400.displayLeds[ledNumber] = updated;
         doDisplayUpdate = true;
       }
     }
     if (address < 0xD0) {
       console.debug(`write ${address.toString(16).toUpperCase()}: ${byte.toString(16).toUpperCase()}`);
-      et3400.debugState();
+      this.et3400.debugState();
     }
     MEM[address] = byte;
   }

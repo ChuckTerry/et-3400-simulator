@@ -27,7 +27,7 @@ export class Et3400 {
   
   /** @constructor */
   constructor() {
-    this.microprocessor = new Microprocessor();
+    this.microprocessor = new Microprocessor(this);
     this.addressingMethods = contstructAddressingMethodTable(this.microprocessor);
     // Holds the current state of each seven-segment display
     this.displayLeds = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];

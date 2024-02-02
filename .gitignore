@@ -3,6 +3,7 @@
 .env*local
 .eslintcache
 .grunt
+.hintrc
 .node_repl_history
 .npm
 .pnpm-debug.log*
@@ -14,6 +15,7 @@
 *.pid.lock
 *.seed
 *.tgz
+dist/
 lerna-debug.log*
 logs
 node_modules/
@@ -22,4 +24,3 @@ pids
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 yarn-debug.log*
 yarn-error.log*
-dist/

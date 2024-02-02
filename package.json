@@ -12,10 +12,24 @@
   },
   "keywords": [
     "Heathkit",
-    "ET-3400"
+    "ET-3400",
+    "Microprocessor",
+    "Trainer",
+    "Simulator",
+    "Emulator",
+    "6800",
+    "MC6800",
+    "Machine Language",
+    "Programming"
   ],
   "author": "Chuck Terry <Chuck.Terry@Outlook.com>",
   "license": "MIT",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/ChuckTerry/ET-3400-Simulator/LICENSE"
+    }
+  ],
   "bugs": {
     "url": "https://github.com/ChuckTerry/ET-3400-Simulator/issues"
   },

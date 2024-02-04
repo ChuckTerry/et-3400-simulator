@@ -1,14 +1,22 @@
-function pad(left = '', string = '', right = '') {
-  return `${left}${string}${right}`;
-}
-
+/**
+ * Pad the beginning of a string with a character to the specified length.
+ * @param {string} string The string to pad.
+ * @param {string} character The padding character.
+ * @param {number} length The length to pad to.
+ * @returns {string} The padded string.
+ */
 function padLeft(string = '', character = '', length = 0) {
   const padLength = length - string.length;
   return padLength < 1
     ? string
-    : pad(character.repeat(padLength), string);
+    : `${character.repeat(padLength) }${string}`;
 }
 
+/**
+ * Converts a number to binary and pads it to 8 characters.
+ * @param {string|number} number The number to convert
+ * @returns {string} The padded binary string.
+ */
 export function padByteBinary(number = 0) {
   if (typeof number === 'string') {
     number = Number.parseInt(number, 10);
@@ -17,6 +25,11 @@ export function padByteBinary(number = 0) {
   return result.length < 9 ? result : result.substr(-8);
 }
 
+/**
+ * Converts a number to hex and pads it to 4 characters.
+ * @param {string|number} number The number to convert
+ * @returns {string} The padded hex string
+ */
 export function padWordHex(number = 0) {
   if (typeof number === 'string') {
     number = Number.parseInt(number, 10);

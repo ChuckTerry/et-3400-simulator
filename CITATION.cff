@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+title: ET-3400 Simulator
+type: software
+authors:
+  - given-names: Chuck
+    family-names: Terry
+    email: Chuck.Terry@Outlook.com
+repository-code: 'https://github.com/ChuckTerry/ET-3400-Simulator'
+url: 'https://ChuckTerry.me/ET-3400-Simulator'
+abstract: Heathkit® ET-3400 Simulator
+keywords:
+  - Heathkit
+  - ET-3400
+  - Microprocessor
+license: MIT
+commit: 19f28e36d575be71b037da79a1cd98f156e1b379
+version: 1.3.0
+date-released: '2024-01-31'

@@ -24,3 +24,19 @@ export function padWordHex(number = 0) {
   const result = padLeft(number.toString(16), '0', 4);
   return result.length < 5 ? result : result.substr(-4);
 }
+
+/**
+ * Converts a URL query string into an object.
+ * @param {string} string The URL query string.
+ * @returns {object} The object representation of the query string.
+ */
+export function getQueryObject(string = location.search.slice(1)) {
+  const object = {};
+  const kvArray = string.split('&');
+  const propertyCount = kvArray.length;
+  for (let index = 0; index < propertyCount; index++) {
+    const [key, value] = kvArray[index].split('=');
+    object[key] = value;
+  }
+  return object;
+}

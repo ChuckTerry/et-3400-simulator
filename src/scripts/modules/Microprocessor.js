@@ -229,7 +229,7 @@ export class Microprocessor {
 
   CBA() {
     this.operand = this.accumulatorB;
-    this.CMP(this.accumulatorA, this.operand);
+    this.CMP(this.accumulatorA);
   }
 
   CLC() {
@@ -438,7 +438,8 @@ export class Microprocessor {
     this.PSHB();
     this.PSH(this.getConditionCodeRegister());
     this.SEI();
-    this.JMP(this.addressRegister = this.RMW(vector));
+    this.addressRegister = this.RMW(vector);
+    this.JMP();
   }
 
   INX() {
@@ -571,7 +572,7 @@ export class Microprocessor {
     this.setConditionCodeRegister(0x10);
     // Jump to position of Monitor Program
     this.addressRegister = this.RMW(Microprocessor.interruptVector.RST);
-    this.JMP(this.addressRegister);
+    this.JMP();
     this.HALT(1);
   }
 
@@ -630,7 +631,7 @@ export class Microprocessor {
 
   SBA() {
     this.operand = this.accumulatorB;
-    this.accumulatorA = this.SUB(this.accumulatorA, this.accumulatorB);
+    this.accumulatorA = this.SUB(this.accumulatorA);
   }
 
   SBCA() {

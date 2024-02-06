@@ -360,16 +360,16 @@ export class Microprocessor {
     if (this.#fetchDecodeExecuteLoopTimer) {
       window.clearTimeout(this.#fetchDecodeExecuteLoopTimer);
     }
-    if (doDisplayUpdate) {
+    if (globalThis.doDisplayUpdate) {
       this.et3400.updateLedDisplay();
     }
     if (this.#halt === 0) {
       return;
     }
     let opcode = 0;
-    for (let clock = 0; clock < 20000; clock += CYC[opcode]) {
+    for (let clock = 0; clock < 20000; clock += globalThis.CYC[opcode]) {
       opcode = this.et3400.microprocessor.GMB();
-      const func = DCD[opcode];
+      const func = globalThis.DCD[opcode];
       if (typeof func === 'function') {
         this.operand = func();
         this.et3400.microprocessor._lambda(opcode);
@@ -577,7 +577,7 @@ export class Microprocessor {
   }
 
   RMB(address) {
-    return MEM[address];
+    return globalThis.MEM[address];
   }
 
   RMW(address) {
@@ -768,14 +768,14 @@ export class Microprocessor {
       const updated = (byte & 1) ? current | shifted : current & (255 - shifted);
       if (updated !== current) {
         this.et3400.displayLeds[ledNumber] = updated;
-        doDisplayUpdate = true;
+        globalThis.doDisplayUpdate = true;
       }
     }
     if (address < 0xD0) {
       console.debug(`write ${address.toString(16).toUpperCase()}: ${byte.toString(16).toUpperCase()}`);
       this.et3400.debugState();
     }
-    MEM[address] = byte;
+    globalThis.MEM[address] = byte;
   }
 
   WMW(address, word) {

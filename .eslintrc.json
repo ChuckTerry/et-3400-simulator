@@ -16,7 +16,20 @@
                 "setWithoutGet": true
             }
         ],
-        
+        "arrow-spacing": [
+            "error",
+            {
+                "before": true,
+                "after": true
+            }
+        ],
+        "capitalized-comments": [
+            "error",
+            "always"
+        ],
+        "constructor-super": [
+            "error"
+        ],
         "indent": [
             "error",
             2
@@ -29,12 +42,16 @@
             "error",
             "single"
         ],
+        "radix": [
+            "error",
+            "always"
+        ],
         "semi": [
             "error",
             "always"
         ],
-        "constructor-super": [
+        "use-isnan": [
             "error"
-        ]
+        ],
     }
 }

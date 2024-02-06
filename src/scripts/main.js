@@ -2,9 +2,11 @@ import { programs } from '../programs/programs.js';
 import { Et3400 } from './modules/Et3400.js';
 import { keypad } from './modules/keypad.js';
 
-/** =================================================
- *     Event Listeners
- *  ================================================= */
+/**
+ * Create a listener for the keydown event
+ * @param {object} keyData data for the key
+ * @returns {function} listener for the keydown event
+ */
 function makeKeyDownListener(keyData) {
   const {simulator, keyCode, keyboardActivation} = keyData;
   const element = document.querySelector(simulator);
@@ -18,6 +20,11 @@ function makeKeyDownListener(keyData) {
   };
 }
 
+/**
+ * Create a listener for the keyup event
+ * @param {object} keyData data for the key
+ * @returns {function} listener for the keyup event
+ */
 function makeKeyUpListener(keyData) {
   const {simulator, keyCode, keyboardActivation} = keyData;
   const element = document.querySelector(simulator);
@@ -31,6 +38,11 @@ function makeKeyUpListener(keyData) {
   };
 }
 
+/**
+ * Create a listener for the click event
+ * @param {object} keyData data for the key that is being clicked
+ * @returns {function} listener for the click event
+ */
 function makeClickListener(keyData) {
   const {simulator, keyCode} = keyData;
   const element = document.querySelector(simulator);
@@ -48,6 +60,10 @@ function makeClickListener(keyData) {
   };
 }
 
+/**
+ * Handles the registration of mouse and keybaord listeners for the simulator
+ * @param {Document} document 
+ */
 function registerListeners(document = globalThis.document) {
   const powerCycle = () => { globalThis.et3400.powerButton(); };
   // Register Listener on the Simulator Power Button
@@ -77,9 +93,10 @@ function registerListeners(document = globalThis.document) {
   document.querySelector('#button-popout').addEventListener('click', doPopout);
 }
 
-/** =================================================
- *     Animation
- *  ================================================= */
+/**
+ * Animates a key being pressed down
+ * @param {HTMLElement} element the key element to animate
+ */
 function animateKeyDown(element) {
   const boundingBox = element.getBBox();
   const x = boundingBox.x;
@@ -89,18 +106,25 @@ function animateKeyDown(element) {
   element.setAttribute('transform', `translate(${xCenter + x},${yCenter + y}) scale(0.925, 0.925) translate(${-xCenter - x},${-yCenter- y})`);
 }
 
+/**
+ * Animates a key being released
+ * @param {HTMLElement} element the key element to animate
+ */
 function animateKeyUp(element) {
   element.setAttribute('transform', '');
 }
 
-/** =================================================
- *     Popout Window
- *  ================================================= */
-
+/**
+ * Opens a new window with the popout.html file
+ */
 function doPopout() {
   globalThis.popout = window.open('./popout.html', '_blank');
 }
 
+/**
+ * Handles the message event sent from the popout window
+ * @param {MessageEvent} event The event object sent from the popout window
+ */
 function onMessage(event) {
   const [action, operand] = event.data.split(':');
   if (action === 'releaseKey') {
@@ -113,9 +137,9 @@ function onMessage(event) {
   }
 }
 
-/** =================================================
- *     Runtime
- *  ================================================= */
+/**
+ * Main function for the simulator
+ */
 window.addEventListener('load', () => {
   window.addEventListener('message', onMessage, false);
   registerListeners();

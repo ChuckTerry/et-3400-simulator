@@ -15,7 +15,7 @@ export class Microprocessor {
     RST: 0xFFFE
   };
 
-  constructor(et3400, encodedInstructionMatrix = Microprocessor.encodedInstructionMatrix.default) {
+  constructor(et3400, memory, encodedInstructionMatrix = Microprocessor.encodedInstructionMatrix.default) {
     this.accumulatorA = 0;
     this.accumulatorB = 0;
     this.operand = 0;
@@ -29,6 +29,7 @@ export class Microprocessor {
 
     this.statusRegister = new StatusRegister();
     this.decodedInstructionNameLookup = atob(encodedInstructionMatrix).split('\x00');
+    this.memory = memory;
     this.#halt = 1;
   }
 
@@ -577,7 +578,7 @@ export class Microprocessor {
   }
 
   RMB(address) {
-    return globalThis.MEM[address];
+    return this.memory.readByte(address);
   }
 
   RMW(address) {
@@ -775,7 +776,7 @@ export class Microprocessor {
       console.debug(`write ${address.toString(16).toUpperCase()}: ${byte.toString(16).toUpperCase()}`);
       this.et3400.debugState();
     }
-    globalThis.MEM[address] = byte;
+    this.memory.writeByte(address, byte);
   }
 
   WMW(address, word) {

@@ -2,6 +2,7 @@ import { Microprocessor } from './Microprocessor.js';
 import { contstructAddressingMethodTable } from './addressingMethods.js';
 import { padByteBinary, padWordHex } from './util.js';
 import { ROM } from '../../programs/heathkit/rom.js';
+import { Memory } from './Memory.js';
 
 
 /**
@@ -27,7 +28,8 @@ export class Et3400 {
   
   /** @constructor */
   constructor() {
-    this.microprocessor = new Microprocessor(this);
+    this.memory = new Memory();
+    this.microprocessor = new Microprocessor(this, this.memory);
     this.addressingMethods = contstructAddressingMethodTable(this.microprocessor);
     // Holds the current state of each seven-segment display
     this.displayLeds = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
@@ -58,7 +60,7 @@ export class Et3400 {
     this.microprocessor.HALT(0);
     // Load the string into memory, two characters at a time
     for (let index = 0; index < length; index += 2) {
-      globalThis.MEM[address++] = parseInt(string.substr(index, 2), 16);
+      this.memory.writeByte(address++, parseInt(string.substr(index, 2), 16));
     }
     // Clear the HALT flag to allow the microprocessor to run again
     this.microprocessor.HALT(1);
@@ -115,8 +117,6 @@ export class Et3400 {
     document.querySelector('.power-led').classList.add('active');
     document.querySelector('.power-led-glow')?.classList.remove('hidden');
     this.clearDisplayLeds();
-    // Initialize Memory as a Zero-Filled aArray
-    globalThis.MEM = new Array(0x10000).fill(0);
     // Prepare Monitor Program
     this.loadProgram(0xFC00, this.#monitorProgram);
     this.reset();
@@ -133,7 +133,7 @@ export class Et3400 {
     globalThis.doDisplayUpdate = undefined;
     this.clearDisplayLeds();
     // Reset Memory
-    globalThis.MEM = globalThis.MEM.fill(0);
+    this.memory.clear();
   }
 
   /**
@@ -151,7 +151,6 @@ export class Et3400 {
       globalThis.CYC[index] = CAM >> 4;
       globalThis.DCD[index] = this.addressingMethods[CAM & 0x0F];
     }
-    globalThis.MEM = [];
   }
 
   /**
@@ -261,7 +260,7 @@ export class Et3400 {
       O(V)erflow ${mpu.statusRegister.overflow}
       (C)arry ${mpu.statusRegister.carry}
     Memory : %o
-    `, globalThis.MEM);
+    `, this.memory);
   }
 
   /**

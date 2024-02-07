@@ -39,7 +39,7 @@
   "name": "et-3400-simulator",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ChuckTerry/ET-3400-Simulator.git"
+    "url": "https://github.com/ChuckTerry/ET-3400-Simulator"
   },
   "scripts": {
     "test": "echo \"Warning: No Tests run; None provided\" && exit 1"

@@ -20,28 +20,38 @@
   ],
   "homepage": "https:chuckterry.me/ET-3400-Simulator",
   "keywords": [
-    "Heathkit",
-    "ET-3400",
-    "Microprocessor",
-    "Trainer",
-    "Simulator",
-    "Emulator",
     "6800",
+    "CPU",
+    "Electronics",
+    "Emulator",
+    "ET-3400",
+    "Heathkit",
     "MC6800",
     "Machine Language",
-    "Programming"
+    "Microcomputer",
+    "Microprocessor",
+    "Programming",
+    "Simulator",
+    "Trainer"
   ],
   "license": "MIT",
   "main": "index.html",
   "name": "et-3400-simulator",
-  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ChuckTerry/ET-3400-Simulator.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Warning: No Tests run; None provided\" && exit 1"
   },
   "type": "module",
-  "version": "1.3.0"
+  "version": "1.3.0",
+  "categories": [
+    "Education",
+    "Programming Languages",
+    "Testing",
+    "Visualization",
+    "Other"
+    ],
+    "pricing": "Free"
 }

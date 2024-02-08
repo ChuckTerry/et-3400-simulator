@@ -35,11 +35,11 @@
     "Trainer"
   ],
   "license": "MIT",
-  "main": "index.html",
+  "main": "index.js",
   "name": "et-3400-simulator",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ChuckTerry/ET-3400-Simulator"
+    "url": "github:ChuckTerry/ET-3400-Simulator"
   },
   "scripts": {
     "test": "echo \"Warning: No Tests run; None provided\" && exit 1"

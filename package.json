@@ -5,7 +5,7 @@
     "url": "https://chuckterry.me"
   },
   "bugs": {
-    "url": "https://github.com/ChuckTerry/ET-3400-Simulator/issues",
+    "url": "https://github.com/ChuckTerry/et-3400-simulator/issues",
     "email": "Chuck.Terry@Outlook.com"
   },
   "description": "A browser-based interactive simulator for the Heathkit® ET-3400 Microprocessor Trainer.",
@@ -18,7 +18,7 @@
       "url": "https://github.com/sponsors/ChuckTerry"
     }
   ],
-  "homepage": "https:chuckterry.me/ET-3400-Simulator",
+  "homepage": "https:chuckterry.me/et-3400-simulator",
   "keywords": [
     "6800",
     "CPU",
@@ -39,7 +39,7 @@
   "name": "et-3400-simulator",
   "repository": {
     "type": "git",
-    "url": "github:ChuckTerry/ET-3400-Simulator"
+    "url": "github:ChuckTerry/et-3400-simulator"
   },
   "scripts": {
     "test": "echo \"Warning: No Tests run; None provided\" && exit 1"

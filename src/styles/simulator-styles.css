@@ -1,3 +1,23 @@
+#power-led-glow {
+  opacity: 0;
+}
+
+#power-led-glow.on {
+  opacity: 1;
+}
+
+.power-switch g {
+  opacity: 0;
+}
+
+.power-switch.off #power-switch-off {
+  opacity: 1;
+}
+
+.power-switch.on #power-switch-on {
+  opacity: 1;
+}
+
 .power-on #power-led-body {
   fill: #DD1717;
 }

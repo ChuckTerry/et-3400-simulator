@@ -67,7 +67,7 @@ function makeClickListener(keyData) {
 function registerListeners(document = globalThis.document) {
   const powerCycle = () => { globalThis.et3400.powerButton(); };
   // Register Listener on the Simulator Power Button
-  document.querySelector('#Switch').addEventListener('mouseup', powerCycle);
+  document.querySelector('.power-switch').addEventListener('mouseup', powerCycle);
   // Register Listeners on the Power Button
   const powerButtons = [...document.querySelectorAll('.power-button')];
   powerButtons[0].addEventListener('mouseup', powerCycle);
@@ -87,6 +87,7 @@ function registerListeners(document = globalThis.document) {
     const simulatorElement = document.querySelector(keyData.simulator);
     const clickAbortController = new AbortController();
     keyData.abortControllers.click = clickAbortController;
+    console.log(keyData);
     simulatorElement.addEventListener('click', makeClickListener(keyData), { clickAbortController });
   }
   // Popout Window

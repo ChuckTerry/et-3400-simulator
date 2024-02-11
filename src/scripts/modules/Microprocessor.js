@@ -87,13 +87,6 @@ export class Microprocessor {
     this.statusRegister.half = ((ARG = (ARG >> 3) & 1) & (operand = (operand >> 3) & 1)) | (operand & (RES = ~((RES >> 3) & 1))) | (RES & ARG);
   }
 
-  _cc__NegativeOverflowZero(ARG) {
-    this.statusRegister.overflow = 0;
-    this.statusRegister.negative = (ARG >> 15) & 1;
-    this.statusRegister.zero = ARG ? 0 : 1;
-    return ARG;
-  }
-
   ABA() {
     this.operand = this.accumulatorB;
     this.accumulatorA = this.ADD(this.accumulatorA);
@@ -470,6 +463,11 @@ export class Microprocessor {
   }
 
   JSR() {
+    const to = this.addressRegister.toString(16).toUpperCase();
+    const from = this.programCounter.toString(16).toUpperCase();
+    if (to !== 'FDBB' && to !== 'FE02') {
+      console.debug('JSR ' + to + ' from ' + from);
+    }
     this.PSHW(this.programCounter);
     this.JMP();
   }
@@ -489,11 +487,17 @@ export class Microprocessor {
   }
 
   LDS() {
-    this.stackPointer = this._cc__NegativeOverflowZero(this.operand);
+    this.statusRegister.overflow = 0;
+    this.statusRegister.negative = (this.operand >> 15) & 1;
+    this.statusRegister.zero = this.operand ? 0 : 1;
+    this.stackPointer = this.operand;
   }
 
   LDX() {
-    this.indexRegister = this._cc__NegativeOverflowZero(this.operand);
+    this.statusRegister.overflow = 0;
+    this.statusRegister.negative = (this.operand >> 15) & 1;
+    this.statusRegister.zero = this.operand ? 0 : 1;
+    this.indexRegister = this.operand;
   }
 
   LSR(ARG) {

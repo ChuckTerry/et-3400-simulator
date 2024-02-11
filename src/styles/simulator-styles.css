@@ -1,0 +1,29 @@
+.power-on #power-led-body {
+  fill: #DD1717;
+}
+
+.power-on #power-led-glare {
+  fill: #FF5555;
+}
+
+.power-on #power-led-deep {
+  fill: #DD1717;
+}
+
+.seven-segment-display.a > .a,
+.seven-segment-display.b > .b,
+.seven-segment-display.c > .c,
+.seven-segment-display.d > .d,
+.seven-segment-display.e > .e,
+.seven-segment-display.f > .f,
+.seven-segment-display.g > .g,
+.seven-segment-display.dp > .dp {
+  fill: #db2638;
+}
+
+.trainer-simulation {
+  margin-top: 40px;
+  display: block;
+  margin-left: auto;
+  max-width: 2000px;
+}

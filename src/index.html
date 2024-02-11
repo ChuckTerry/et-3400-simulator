@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
     <meta charset="UTF-8">
     <title>Heathkit® ET-3400 Simulator</title>
@@ -9,9 +8,9 @@
     <meta name="author" content="Chuck Terry">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./styles/main.css" />
+    <link rel="stylesheet" type="text/css" href="./styles/simulator-styles.css" />
     <script src="./scripts/main.js" type="module"></script>
   </head>
-
   <body>
     <div class="basic-interface">
       <div class="float-right">
@@ -14902,6 +14901,22 @@
         </g>
       </svg>
     </div>
-  </body>
+    <dialog id="disclaimer">
+      <form>
+        <p>I am an avid supporter of Heath Company who loves their kits and educational offerings.  However, I am not an employee of Heath Company.  This project is not sponsored, endorsed, or approved of by Heath Company.  That being said, please visit their <a href="https://shop.heathkit.com/shop">Online Store</a> and show them some support!</p>
+        <p>This project was created for educational purposes.  If you have any suggestions or find any bugs, please let me know!</p>
+        <input type="checkbox" id="confirm-disclaimer" name="confirm-disclaimer" value="Yes">
+        <label for="confirm-disclaimer"> I understand that the creator of this project is not an employee of Heath Company and that this Simulator is not a Heath Company Product.</label><br>
+        <div>
+          <button type="button" value="cancel" formmethod="dialog">Cancel</button>
+          <button type="button" id="confirmBtn" value="default">Confirm</button>
+        </div>
+      </form>
+    </dialog>
+    <p>
+      <button id="showDialog">Show the dialog</button>
+    </p>
+    <output></output>
 
+  </body>
 </html>

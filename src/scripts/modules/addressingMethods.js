@@ -1,68 +1,103 @@
-export function contstructAddressingMethodTable(microprocessor) {
-  const addressingMethods = [
-    function invalidIllegal() {
-      return 'Illegal';
-    },
-    function undocumented() {
-      return 'Undocumented';
-    },
-    function reserved() {
-      return 'Reserved';
-    },
-    function inherent() {
-      return 'Implied';
-    },
-    function relative() {
-      const operand = microprocessor.GMB();
-      microprocessor.operand = operand;
-      const address = microprocessor.programCounter + operand - (operand > 128 ? 256 : 0);
-      microprocessor.addressRegister = microprocessor.ADDR(address);
-      return operand;
-    },
-    function indexedByteRead() {
-      const address = microprocessor.ADDR(microprocessor.indexRegister + microprocessor.GMB());
-      return microprocessor.RMB(address);
-    },
-    function indexedWordRead() {
-      const address = microprocessor.ADDR(microprocessor.indexRegister + microprocessor.GMB());
-      return microprocessor.RMW(address);
-    },
-    function indexedWordWrite() {
-      microprocessor.addressRegister = microprocessor.ADDR(microprocessor.indexRegister + microprocessor.GMB());
-      return 'Implied';
-    },
-    function immediateByte() {
-      const address = microprocessor.programCounter;
-      return microprocessor.GMB(address);
-    },
-    function directByteRead() {
-      const address = microprocessor.GMB();
-      return microprocessor.RMB(address);
-    },
-    function directWordRead() {
-      const address = microprocessor.GMB();
-      return microprocessor.RMW(address);
-    },
-    function directWordWrite() {
-      microprocessor.addressRegister = microprocessor.GMB();
-      return 'Implied';
-    },
-    function immediateWord() {
-      const address = microprocessor.programCounter;
-      return microprocessor.GMW(address);
-    },
-    function extendedByteRead() {
-      const address = microprocessor.GMW();
-      return microprocessor.RMB(address);
-    },
-    function extendedWordRead() {
-      const address = microprocessor.GMW();
-      return microprocessor.RMW(address);
-    },
-    function extendedWordWrite() {
-      microprocessor.addressRegister = microprocessor.GMW();
-      return 'Implied';
-    }
+let microprocessor;
+
+function directByteRead() {
+  const address = microprocessor.GMB();
+  return microprocessor.RMB(address);
+}
+
+function directWordRead() {
+  const address = microprocessor.GMB();
+  return microprocessor.RMW(address);
+}
+
+function directWordWrite() {
+  microprocessor.addressRegister = microprocessor.GMB();
+  return 'Direct Word Write';
+}
+
+function extendedByteRead() {
+  const address = microprocessor.GMW();
+  return microprocessor.RMB(address);
+}
+
+function extendedWordRead() {
+  const address = microprocessor.GMW();
+  return microprocessor.RMW(address);
+}
+
+function extendedWordWrite() {
+  microprocessor.addressRegister = microprocessor.GMW();
+  return 'Extended Word Write';
+}
+
+function immediateByte() {
+  const address = microprocessor.programCounter;
+  return microprocessor.GMB(address);
+}
+
+function immediateWord() {
+  const address = microprocessor.programCounter;
+  return microprocessor.GMW(address);
+}
+
+function indexedByteRead() {
+  const address = microprocessor.ADDR(microprocessor.indexRegister + microprocessor.GMB());
+  return microprocessor.RMB(address);
+}
+
+function indexedWordRead() {
+  const address = microprocessor.ADDR(microprocessor.indexRegister + microprocessor.GMB());
+  return microprocessor.RMW(address);
+}
+
+function indexedWordWrite() {
+  microprocessor.addressRegister = microprocessor.ADDR(microprocessor.indexRegister + microprocessor.GMB());
+  return 'Indexed Word Write';
+}
+
+function inherent() {
+  return 'Inherent';
+} 
+
+function invalid() {
+  return 'ERROR: Invalid/Illegal Opcode';
+}
+
+function relative() {
+  const operand = microprocessor.GMB();
+  microprocessor.operand = operand;
+  const address = microprocessor.programCounter + operand - (operand > 128 ? 256 : 0);
+  microprocessor.addressRegister = microprocessor.ADDR(address);
+  return operand;
+}
+
+// Currently Unused
+function reserved() {
+  return 'Reserved';
+}
+
+function undocumented() {
+  return 'ERROR: Undocumented Opcode';
+}
+
+export function contstructAddressingMethodTable(microprocessorInstance) {
+  microprocessor = microprocessorInstance;
+  return [
+    invalid,
+    undocumented,
+    reserved,
+    inherent,
+    relative,
+    indexedByteRead,
+    indexedWordRead,
+    indexedWordWrite,
+    immediateByte,
+    directByteRead,
+    directWordRead,
+    directWordWrite,
+    immediateWord,
+    extendedByteRead,
+    extendedWordRead,
+    extendedWordWrite
   ];
-  return addressingMethods;
 }

@@ -29,7 +29,7 @@ export function contstructAddressingMethodTable(microprocessor) {
     },
     function indexedWordWrite() {
       microprocessor.addressRegister = microprocessor.ADDR(microprocessor.indexRegister + microprocessor.GMB());
-      return "Implied";
+      return 'Implied';
     },
     function immediateByte() {
       const address = microprocessor.programCounter;

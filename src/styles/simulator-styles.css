@@ -1,20 +1,14 @@
-#power-led-glow {
+#power-led-glow,
+.power-switch g,
+.dip-switch:not(.on)>.dip-on,
+.dip-switch.on>.dip-off {
   opacity: 0;
 }
 
-#power-led-glow.on {
-  opacity: 1;
-}
-
-.power-switch g {
-  opacity: 0;
-}
-
-.power-switch.off #power-switch-off {
-  opacity: 1;
-}
-
-.power-switch.on #power-switch-on {
+#power-led-glow.on,
+.power-switch.off #power-switch-off,
+.power-switch.on #power-switch-on,
+.dip-switch.on>.dip-on {
   opacity: 1;
 }
 
@@ -47,12 +41,3 @@
   margin-left: auto;
   max-width: 2000px;
 }
-.dip-switch:not(.on) > .dip-on,
-.dip-switch.on > .dip-off {
-  opacity: 0;
-}
-
-.dip-switch.on > .dip-on {
-  opacity: 1;
-}
-

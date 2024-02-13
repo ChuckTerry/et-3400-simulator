@@ -6,6 +6,8 @@ import { StatusRegister } from './StatusRegister.js';
 export class Microprocessor {
   #fetchDecodeExecuteLoopTimer; #halt;
 
+  static #opCodeCycles = [2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 5, 2, 10, 2, 2, 9, 12, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 7, 2, 2, 7, 7, 2, 7, 7, 7, 7, 7, 2, 7, 7, 4, 7, 6, 2, 2, 6, 6, 2, 6, 6, 6, 6, 6, 2, 6, 6, 3, 6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 8, 3, 2, 3, 3, 3, 2, 3, 3, 3, 4, 3, 3, 3, 3, 4, 2, 4, 5, 5, 5, 5, 2, 5, 5, 5, 6, 5, 5, 5, 5, 6, 8, 6, 7, 4, 4, 4, 2, 4, 4, 4, 5, 4, 4, 4, 4, 5, 9, 5, 6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3, 3, 3, 2, 3, 3, 3, 4, 3, 3, 3, 3, 2, 2, 4, 5, 5, 5, 5, 2, 5, 5, 5, 6, 5, 5, 5, 5, 2, 2, 6, 7, 4, 4, 4, 2, 4, 4, 4, 5, 4, 4, 4, 4, 2, 2, 5, 6];
+
   /**
    * Encoded string containing instruction set mnemonics
    */
@@ -378,7 +380,7 @@ export class Microprocessor {
       return;
     }
     let opcode = 0;
-    for (let clock = 0; clock < 20000; clock += globalThis.CYC[opcode]) {
+    for (let clock = 0; clock < 20000; clock += Microprocessor.#opCodeCycles[opcode]) {
       opcode = this.et3400.microprocessor.GMB();
       const func = globalThis.DCD[opcode];
       if (typeof func === 'function') {
@@ -458,6 +460,12 @@ export class Microprocessor {
     this.calculateZeroStatus(this.indexRegister);
   }
 
+  INW(word) {
+    return ++word & 0xFFFF;
+  }
+
+  IOP() { }
+
   JMP() {
     this.programCounter = this.addressRegister;
   }
@@ -471,12 +479,6 @@ export class Microprocessor {
     this.PSHW(this.programCounter);
     this.JMP();
   }
-
-  INW(word) {
-    return ++word & 0xFFFF;
-  }
-
-  IOP() { }
 
   LDAA() {
     this.accumulatorA = this.ACC(this.operand);

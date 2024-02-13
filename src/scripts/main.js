@@ -87,11 +87,30 @@ function registerListeners(document = globalThis.document) {
     const simulatorElement = document.querySelector(keyData.simulator);
     const clickAbortController = new AbortController();
     keyData.abortControllers.click = clickAbortController;
-    console.log(keyData);
     simulatorElement.addEventListener('click', makeClickListener(keyData), { clickAbortController });
   }
   // Popout Window
   document.querySelector('#button-popout').addEventListener('click', doPopout);
+  // DIP Switches
+  const dipSwitches = [...document.querySelector('#dip-switches').children];
+  const dipSwitchCount = dipSwitches.length;
+  for (let index = 0; index < dipSwitchCount; index++) {
+    const dip = dipSwitches[index];
+    dip.addEventListener('click', (event) => {
+      const x = event.clientX;
+      const y = event.clientY;
+      const elements = document.elementsFromPoint(x, y);
+      const elementCount = elements.length;
+      for (let index = 0; index < elementCount; index++) {
+        const element = elements[index];
+        const target = element.parentElement.parentElement;
+        if (target.classList.contains('dip-switch')) {
+          target.classList.toggle('on');
+          break;
+        }
+      }
+    });
+  }
 }
 
 /**

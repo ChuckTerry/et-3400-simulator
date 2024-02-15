@@ -4,7 +4,6 @@ import { padByteBinary, padWordHex } from './util.js';
 import { ROM } from '../../programs/heathkit/rom.js';
 import { Memory } from './Memory.js';
 
-
 /**
  * Converts a hexadecimal string to binary.
  * 
@@ -47,7 +46,6 @@ export class Et3400 {
     this.initialize();
     this.powered = false;
   }
-
 
   /**
    * Loads a hexadecimal string into memory starting at the specified address.

@@ -41,7 +41,7 @@ export class Et3400 {
       document.querySelector('#display-v'),
       document.querySelector('#display-c')
     ];
-    this.powerButton = document.querySelectorAll('.power-button');
+    this.powerButtons = document.querySelectorAll('.power-button');
     this.simulatorSwitch = document.querySelector('.power-switch');
     this.simulatorLight = document.querySelector('#power-led');
     this.powerLed = document.querySelector('.power-led');
@@ -95,7 +95,7 @@ export class Et3400 {
     const functionName = this.powered ? 'powerOff' : 'powerOn';
     this[functionName]();
     // Change shading to indicate switch flip on power buttons
-    const buttons = [...this.powerButton];
+    const buttons = [...this.powerButtons];
     const buttonCount = buttons.length;
     for (let index = 0; index < buttonCount; index++) {
       const element = buttons[index];

@@ -46,6 +46,7 @@ export class Et3400 {
     this.simulatorLight = document.querySelector('#power-led');
     this.powerLed = document.querySelector('.power-led');
     this.powerLedGlow = document.querySelector('#power-led-glow');
+    this.plainTextDisplay = document.querySelector('#plaintext-display');
     this.initialize();
     this.powered = false;
   }
@@ -203,7 +204,9 @@ export class Et3400 {
       }
       string += '\n';
     }
-    document.querySelector('#plaintext-display').innerHTML = string;
+    if (this.plainTextDisplay) {
+      this.plainTextDisplay.innerHTML = string;
+    }
     this.updateSimulatorDisplay();
     if (globalThis.popout) {
       globalThis.popout.postMessage(`updateDisplay:${string}`, '*');
@@ -215,7 +218,10 @@ export class Et3400 {
    * Updates the simulator display to match the plaintext display.
    */
   updateSimulatorDisplay() {
-    const htmlString = document.querySelector('#plaintext-display').innerHTML;
+    const htmlString = this.plainTextDisplay?.innerHTML;
+    if (htmlString === undefined) {
+      return;
+    }
     const replacedString = htmlString.replaceAll(/<\/*b>/g, 'x');
     const stringArray = replacedString.split('\n');
     let lit = false;

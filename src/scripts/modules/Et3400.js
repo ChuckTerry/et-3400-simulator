@@ -41,6 +41,8 @@ export class Et3400 {
       document.querySelector('#display-v'),
       document.querySelector('#display-c')
     ];
+    this.powerButton = document.querySelectorAll('.power-button');
+    this.simulatorSwitch = document.querySelector('.power-switch');
     this.initialize();
     this.powered = false;
   }
@@ -89,8 +91,9 @@ export class Et3400 {
     const functionName = this.powered ? 'powerOff' : 'powerOn';
     this[functionName]();
     // Change shading to indicate switch flip on power buttons
-    const buttons = document.querySelectorAll('.power-button');
-    for (let index = 0; index < 2; index++) {
+    const buttons = [...this.powerButton];
+    const buttonCount = buttons.length;
+    for (let index = 0; index < buttonCount; index++) {
       const element = buttons[index];
       element.innerText = element.innerText === 'O' ? 'II' : 'O';
       element.classList.toggle('active');
@@ -100,9 +103,10 @@ export class Et3400 {
     const func = this.powered ? 'add' : 'remove';
     simulatorLight.classList[func]('power-on');
     // Update Power Switch on Simulator
-    const simulatorSwitch = document.querySelector('.power-switch');
-    simulatorSwitch.classList.add(this.powered ? 'on' : 'off');
-    simulatorSwitch.classList.remove(this.powered ? 'off' : 'on');
+    if (this.simulatorSwitch) {
+      this.simulatorSwitch.classList.add(this.powered ? 'on' : 'off');
+      this.simulatorSwitch.classList.remove(this.powered ? 'off' : 'on');
+    }
   }
 
   /**

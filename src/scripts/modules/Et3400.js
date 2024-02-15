@@ -43,6 +43,7 @@ export class Et3400 {
     ];
     this.powerButton = document.querySelectorAll('.power-button');
     this.simulatorSwitch = document.querySelector('.power-switch');
+    this.simulatorLight = document.querySelector('#power-led');
     this.initialize();
     this.powered = false;
   }
@@ -99,9 +100,10 @@ export class Et3400 {
       element.classList.toggle('active');
     }
     // Update Power LED on Simulator
-    const simulatorLight = document.querySelector('#power-led');
-    const func = this.powered ? 'add' : 'remove';
-    simulatorLight.classList[func]('power-on');
+    if (this.simulatorLight) {
+      const func = this.powered ? 'add' : 'remove';
+      this.simulatorLight.classList[func]('power-on');
+    }
     // Update Power Switch on Simulator
     if (this.simulatorSwitch) {
       this.simulatorSwitch.classList.add(this.powered ? 'on' : 'off');

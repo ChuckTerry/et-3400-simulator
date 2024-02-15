@@ -44,6 +44,8 @@ export class Et3400 {
     this.powerButton = document.querySelectorAll('.power-button');
     this.simulatorSwitch = document.querySelector('.power-switch');
     this.simulatorLight = document.querySelector('#power-led');
+    this.powerLed = document.querySelector('.power-led');
+    this.powerLedGlow = document.querySelector('#power-led-glow');
     this.initialize();
     this.powered = false;
   }
@@ -120,8 +122,8 @@ export class Et3400 {
     globalThis.doDisplayUpdate = undefined;
     this.microprocessor.HALT(1);
     // Update Power LED on Simulator and add the glow effect
-    document.querySelector('.power-led').classList.add('active');
-    document.querySelector('#power-led-glow').classList.add('on');
+    this.powerLed?.classList.add('active');
+    this.powerLedGlow?.classList.add('on');
     this.clearDisplayLeds();
     // Prepare Monitor Program
     this.loadProgram(0xFC00, this.#monitorProgram);
@@ -134,8 +136,8 @@ export class Et3400 {
   powerOff() {
     this.microprocessor.HALT(0);
     this.powered = false;
-    document.querySelector('.power-led').classList.remove('active');
-    document.querySelector('#power-led-glow').classList.remove('on');
+    this.powerLed?.classList.remove('active');
+    this.powerLedGlow?.classList.remove('on');
     globalThis.doDisplayUpdate = undefined;
     this.clearDisplayLeds();
     // Reset Memory

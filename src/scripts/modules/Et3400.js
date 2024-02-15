@@ -26,15 +26,14 @@ export class Et3400 {
   #monitorProgram;
   
   /** @constructor */
-  constructor() {
-    this.memory = new Memory();
-    this.microprocessor = new Microprocessor(this, this.memory);
-    this.addressingMethods = contstructAddressingMethodTable(this.microprocessor);
+  constructor(memory, microprocessor, addressingMethods, displayElements) {
+    this.memory = memory ?? new Memory();
+    this.microprocessor = microprocessor ?? new Microprocessor(this, this.memory);
+    this.addressingMethods = addressingMethods ?? contstructAddressingMethodTable(this.microprocessor);
     // Holds the current state of each seven-segment display
     this.displayLeds = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
-
     // Holds the DOM elements for each seven-segment display
-    this.displayElements = [
+    this.displayElements = displayElements || [
       document.querySelector('#display-h'),
       document.querySelector('#display-i'),
       document.querySelector('#display-n'),
@@ -42,7 +41,12 @@ export class Et3400 {
       document.querySelector('#display-v'),
       document.querySelector('#display-c')
     ];
-
+    this.powerButtons = document.querySelectorAll('.power-button');
+    this.simulatorSwitch = document.querySelector('.power-switch');
+    this.simulatorLight = document.querySelector('#power-led');
+    this.powerLed = document.querySelector('.power-led');
+    this.powerLedGlow = document.querySelector('#power-led-glow');
+    this.plainTextDisplay = document.querySelector('#plaintext-display');
     this.initialize();
     this.powered = false;
   }
@@ -91,20 +95,23 @@ export class Et3400 {
     const functionName = this.powered ? 'powerOff' : 'powerOn';
     this[functionName]();
     // Change shading to indicate switch flip on power buttons
-    const buttons = document.querySelectorAll('.power-button');
-    for (let index = 0; index < 2; index++) {
+    const buttons = [...this.powerButtons];
+    const buttonCount = buttons.length;
+    for (let index = 0; index < buttonCount; index++) {
       const element = buttons[index];
       element.innerText = element.innerText === 'O' ? 'II' : 'O';
       element.classList.toggle('active');
     }
     // Update Power LED on Simulator
-    const simulatorLight = document.querySelector('#power-led');
-    const func = this.powered ? 'add' : 'remove';
-    simulatorLight.classList[func]('power-on');
+    if (this.simulatorLight) {
+      const func = this.powered ? 'add' : 'remove';
+      this.simulatorLight.classList[func]('power-on');
+    }
     // Update Power Switch on Simulator
-    const simulatorSwitch = document.querySelector('.power-switch');
-    simulatorSwitch.classList.add(this.powered ? 'on' : 'off');
-    simulatorSwitch.classList.remove(this.powered ? 'off' : 'on');
+    if (this.simulatorSwitch) {
+      this.simulatorSwitch.classList.add(this.powered ? 'on' : 'off');
+      this.simulatorSwitch.classList.remove(this.powered ? 'off' : 'on');
+    }
   }
 
   /**
@@ -116,8 +123,8 @@ export class Et3400 {
     globalThis.doDisplayUpdate = undefined;
     this.microprocessor.HALT(1);
     // Update Power LED on Simulator and add the glow effect
-    document.querySelector('.power-led').classList.add('active');
-    document.querySelector('#power-led-glow').classList.add('on');
+    this.powerLed?.classList.add('active');
+    this.powerLedGlow?.classList.add('on');
     this.clearDisplayLeds();
     // Prepare Monitor Program
     this.loadProgram(0xFC00, this.#monitorProgram);
@@ -130,8 +137,8 @@ export class Et3400 {
   powerOff() {
     this.microprocessor.HALT(0);
     this.powered = false;
-    document.querySelector('.power-led').classList.remove('active');
-    document.querySelector('#power-led-glow').classList.remove('on');
+    this.powerLed?.classList.remove('active');
+    this.powerLedGlow?.classList.remove('on');
     globalThis.doDisplayUpdate = undefined;
     this.clearDisplayLeds();
     // Reset Memory
@@ -197,7 +204,9 @@ export class Et3400 {
       }
       string += '\n';
     }
-    document.querySelector('#plaintext-display').innerHTML = string;
+    if (this.plainTextDisplay) {
+      this.plainTextDisplay.innerHTML = string;
+    }
     this.updateSimulatorDisplay();
     if (globalThis.popout) {
       globalThis.popout.postMessage(`updateDisplay:${string}`, '*');
@@ -209,7 +218,10 @@ export class Et3400 {
    * Updates the simulator display to match the plaintext display.
    */
   updateSimulatorDisplay() {
-    const htmlString = document.querySelector('#plaintext-display').innerHTML;
+    const htmlString = this.plainTextDisplay?.innerHTML;
+    if (htmlString === undefined) {
+      return;
+    }
     const replacedString = htmlString.replaceAll(/<\/*b>/g, 'x');
     const stringArray = replacedString.split('\n');
     let lit = false;

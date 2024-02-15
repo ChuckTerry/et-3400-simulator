@@ -26,15 +26,14 @@ export class Et3400 {
   #monitorProgram;
   
   /** @constructor */
-  constructor() {
-    this.memory = new Memory();
-    this.microprocessor = new Microprocessor(this, this.memory);
-    this.addressingMethods = contstructAddressingMethodTable(this.microprocessor);
+  constructor(memory, microprocessor, addressingMethods, displayElements) {
+    this.memory = memory ?? new Memory();
+    this.microprocessor = microprocessor ?? new Microprocessor(this, this.memory);
+    this.addressingMethods = addressingMethods ?? contstructAddressingMethodTable(this.microprocessor);
     // Holds the current state of each seven-segment display
     this.displayLeds = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
-
     // Holds the DOM elements for each seven-segment display
-    this.displayElements = [
+    this.displayElements = displayElements || [
       document.querySelector('#display-h'),
       document.querySelector('#display-i'),
       document.querySelector('#display-n'),
@@ -42,7 +41,6 @@ export class Et3400 {
       document.querySelector('#display-v'),
       document.querySelector('#display-c')
     ];
-
     this.initialize();
     this.powered = false;
   }

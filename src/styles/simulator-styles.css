@@ -24,14 +24,14 @@
   fill: #DD1717;
 }
 
-.seven-segment-display.a > .a,
-.seven-segment-display.b > .b,
-.seven-segment-display.c > .c,
-.seven-segment-display.d > .d,
-.seven-segment-display.e > .e,
-.seven-segment-display.f > .f,
-.seven-segment-display.g > .g,
-.seven-segment-display.dp > .dp {
+.seven-segment-display.a>.a,
+.seven-segment-display.b>.b,
+.seven-segment-display.c>.c,
+.seven-segment-display.d>.d,
+.seven-segment-display.e>.e,
+.seven-segment-display.f>.f,
+.seven-segment-display.g>.g,
+.seven-segment-display.dp>.dp {
   fill: #db2638;
 }
 
@@ -40,4 +40,8 @@
   display: block;
   margin-left: auto;
   max-width: 2000px;
+}
+
+svg {
+  width: 800px;
 }

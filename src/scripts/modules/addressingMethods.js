@@ -41,17 +41,17 @@ function immediateWord() {
 }
 
 function indexedByteRead() {
-  const address = microprocessor.ADDR(microprocessor.indexRegister + microprocessor.GMB());
+  const address = (microprocessor.indexRegister + microprocessor.GMB()) & 0xFFFF;
   return microprocessor.RMB(address);
 }
 
 function indexedWordRead() {
-  const address = microprocessor.ADDR(microprocessor.indexRegister + microprocessor.GMB());
+  const address = (microprocessor.indexRegister + microprocessor.GMB()) & 0xFFFF;
   return microprocessor.RMW(address);
 }
 
 function indexedWordWrite() {
-  microprocessor.addressRegister = microprocessor.ADDR(microprocessor.indexRegister + microprocessor.GMB());
+  microprocessor.addressRegister = (microprocessor.indexRegister + microprocessor.GMB()) & 0xFFFF;
   return 'Indexed Word Write';
 }
 
@@ -67,7 +67,7 @@ function relative() {
   const operand = microprocessor.GMB();
   microprocessor.operand = operand;
   const address = microprocessor.programCounter + operand - (operand > 128 ? 256 : 0);
-  microprocessor.addressRegister = microprocessor.ADDR(address);
+  microprocessor.addressRegister = address & 0xFFFF;
   return operand;
 }
 

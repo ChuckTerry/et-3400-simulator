@@ -61,6 +61,44 @@ function makeClickListener(keyData) {
 }
 
 /**
+ * Handles the power button on the side menu being pressed
+ */
+function ioPowerButtonHandler() {
+  const simulatorSwitch = document.querySelector('#Top_Bar > g.power-switch');
+  simulatorSwitch?.dispatchEvent(new Event('mouseup'));
+}
+
+/**
+ * Shows the unimplemented dialog
+ */
+function showUnimplemented() {
+  document.querySelector('#unimplemented').showModal();
+}
+
+/**
+ * Handles the registration of listeners for the aside menu
+ * @returns {undefined}
+ */
+function registerAsideMenuListeners() {
+  const menuBar = document.querySelector('#menu-bar-right');
+  if (menuBar === null) {
+    return;
+  }
+  document.querySelector('button.expand').addEventListener('click', showUnimplemented);
+  const ioPowerButton = menuBar.querySelector('button.io-power');
+  if (ioPowerButton) {
+    ioPowerButton.addEventListener('click', ioPowerButtonHandler);
+  }
+  document.querySelector('button.examine').addEventListener('click', showUnimplemented);
+  document.querySelector('button.keybindings').addEventListener('click', showUnimplemented);
+  document.querySelector('button.options').addEventListener('click', showUnimplemented);
+  document.querySelector('button.help').addEventListener('click', showUnimplemented);
+  document.querySelector('#close-unimplemented').addEventListener('click', () => {
+    document.querySelector('#close-unimplemented').form.parentElement.close();
+  });
+}
+
+/**
  * Handles the registration of mouse and keybaord listeners for the simulator
  * @param {Document} document 
  */
@@ -111,6 +149,7 @@ function registerListeners(document = globalThis.document) {
       }
     });
   }
+  registerAsideMenuListeners();
 }
 
 /**

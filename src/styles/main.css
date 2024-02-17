@@ -7,6 +7,23 @@ b {
   -webkit-text-stroke: 1px red;
 }
 
+button.menu {
+  background-color: #00000000;
+  border: 0px;
+  width: 72px;
+  height: 72px;
+  margin: 3px;
+  padding: 4px;
+  cursor: pointer;
+  display: block;
+}
+
+dialog *,
+button {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 .sans-serif {
   font-family: sans-serif;
 }
@@ -128,4 +145,33 @@ span.digit {
 
 .basic-interface {
   display: none;
+}
+
+.hidden {
+  display: none;
+}
+
+aside.menu-bar {
+  display: block;
+  overflow: hidden;
+  min-width: 60px;
+  max-width: 90px;
+  height: 100%;
+  background-color: #b8eaff82;
+  color: rgb(0, 0, 0);
+  font-size: 1.2em;
+  font-family: sans-serif;
+  padding: 2px;
+  margin: 0px;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 10;
+  border-left: 3px solid #222222;
+}
+
+button.menu:hover {
+  background-color: #00000022;
+  border-radius: 20px;
+  border: 1px solid #FEFEFE88
 }

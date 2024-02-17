@@ -158,6 +158,20 @@ function onMessage(event) {
 }
 
 /**
+ * Disables the Edge mini menu.
+ * Thanks to Luis Lobo; Source:
+ * https://stackoverflow.com/questions/71649638/prevent-context-menu-in-edge-when-text-is-selected/71784670#71784670
+ */
+function disableEdgeMiniMenu() {
+  window.addEventListener('mouseup', (event) => {
+    event.preventDefault();
+  });
+  window.addEventListener('dblclick', () => {
+    window.getSelection().empty();
+  });
+}
+
+/**
  * Main function for the simulator
  */
 window.addEventListener('load', () => {
@@ -171,5 +185,8 @@ window.addEventListener('load', () => {
     }
     return globalThis.et3400.loadHex(...args);
   };
+  if (/Edg\//.test(window.navigator.userAgent || '')) {
+    disableEdgeMiniMenu();
+  }
   globalThis.programs = programs;
 });

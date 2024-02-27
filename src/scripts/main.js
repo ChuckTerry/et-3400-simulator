@@ -1,5 +1,6 @@
 import { programs } from '../programs/programs.js';
 import { Et3400 } from './modules/Et3400.js';
+import { ExamineController } from './modules/ExamineController.js';
 import { keypad } from './modules/keypad.js';
 
 /**
@@ -61,6 +62,42 @@ function makeClickListener(keyData) {
 }
 
 /**
+ * Returns a list of elements under the cursor on a click event
+ * @param {MouseEvent} event Event object
+ * @returns {HTMLElement[]}
+ */
+function getElementsUnderClick(event) {
+  const { clientX, clientY } = event;
+  const elements = document.elementsFromPoint(clientX, clientY);
+  return elements;
+}
+
+/**
+ * Handles the examine click event
+ * @param {MouseEvent} event The event object
+ * @returns {false}
+ */
+function examineClickHandler(event) {
+  if (!document.querySelector('#simulator-svg').classList.contains('examine-mode')) {
+    return false;
+  }
+  const elements = getElementsUnderClick(event);
+  const elementCount = elements.length;
+  for (let index = 0; index < elementCount; index++) {
+    let element = elements[index];
+    console.dir(element);
+    while (element.id !== 'simulator-svg') {
+      if (element.classList.contains('examinable')) {
+        globalThis.et3400.examineController.display(element);
+        return false;
+      }
+      element = element.parentElement;
+    }
+  }
+  return false;
+}
+
+/**
  * Handles the power button on the side menu being pressed
  */
 function ioPowerButtonHandler() {
@@ -89,13 +126,28 @@ function registerAsideMenuListeners() {
   if (ioPowerButton) {
     ioPowerButton.addEventListener('click', ioPowerButtonHandler);
   }
-  document.querySelector('button.examine').addEventListener('click', showUnimplemented);
+  document.querySelector('button.examine').addEventListener('click', () => {
+    document.querySelector('#simulator-svg').classList.toggle('examine-mode');
+  });
   document.querySelector('button.keybindings').addEventListener('click', showUnimplemented);
   document.querySelector('button.options').addEventListener('click', showUnimplemented);
   document.querySelector('button.help').addEventListener('click', showUnimplemented);
-  document.querySelector('#close-unimplemented').addEventListener('click', () => {
-    document.querySelector('#close-unimplemented').form.parentElement.close();
-  });
+  const dialogCloseButtons = document.querySelectorAll('.close-dialog');
+  const buttonCount = dialogCloseButtons.length;
+  for (let index = 0; index < buttonCount; index++) {
+    const button = dialogCloseButtons[index];
+    button.addEventListener('click', closeDialog);
+  }
+}
+
+/**
+ * Closes a dialog
+ * @param {Event} event The event object
+ * @returns {false} Always returns false
+ */
+function closeDialog(event) {
+  event?.target?.form?.parentElement?.close();
+  return false;
 }
 
 /**
@@ -135,9 +187,7 @@ function registerListeners(document = globalThis.document) {
   for (let index = 0; index < dipSwitchCount; index++) {
     const dip = dipSwitches[index];
     dip.addEventListener('click', (event) => {
-      const x = event.clientX;
-      const y = event.clientY;
-      const elements = document.elementsFromPoint(x, y);
+      const elements = getElementsUnderClick(event);
       const elementCount = elements.length;
       for (let index = 0; index < elementCount; index++) {
         const element = elements[index];
@@ -228,4 +278,6 @@ window.addEventListener('load', () => {
     disableEdgeMiniMenu();
   }
   globalThis.programs = programs;
+  globalThis.et3400.examineController = new ExamineController();
+  document.querySelector('#simulator-svg').addEventListener('click', examineClickHandler);
 });

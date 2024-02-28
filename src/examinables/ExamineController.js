@@ -3,7 +3,7 @@ import { examinableNameArray, examinableCount } from './examinableNameArray.js';
 export class ExamineController {
   constructor() {
     this.examinables = new Map();
-    const path = './html/';
+    const path = './examinables/html/';
     for (let index = 0; index < examinableCount; index++) {
       const name = examinableNameArray[index];
       const filePath = `${path}${name}.html`;

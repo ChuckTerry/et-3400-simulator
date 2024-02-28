@@ -1,6 +1,6 @@
 import { programs } from '../programs/programs.js';
 import { Et3400 } from './modules/Et3400.js';
-import { ExamineController } from './modules/ExamineController.js';
+import { ExamineController } from '../examinables/ExamineController.js';
 import { keypad } from './modules/keypad.js';
 
 /**

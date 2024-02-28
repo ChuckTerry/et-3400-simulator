@@ -175,3 +175,43 @@ button.menu:hover {
   border-radius: 20px;
   border: 1px solid #FEFEFE88
 }
+
+.close-dialog {
+  float: right;
+  margin-right: 12px;
+}
+
+.clearfix {
+  clear: both;
+}
+
+.float-bottom-spacer {
+  margin-top: 12px;
+}
+
+form p {
+  text-indent: 12px;
+  text-align: justify;
+  margin-left: 16px;
+  margin-right: 16px;
+  padding-bottom: 18px;
+}
+
+form h2,
+form h3 {
+  border-bottom: 4px double #5151b2;
+  border-left: 10px solid #1663d6;
+  padding-left: 4px;
+  padding-bottom: 1px;
+}
+
+form h4 {
+  border-bottom: 1px solid #5151b2;
+  padding-left: 2px;
+  padding-bottom: 1px;
+}
+
+dialog form * {
+  -webkit-user-select: text;
+  user-select: text;
+}

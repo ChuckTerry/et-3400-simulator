@@ -95,3 +95,10 @@ svg {
 .examine-mode g:not(.examinable) {
   filter: brightness(0.9);
 }
+
+#examine-dialog {
+  max-width: 60%;
+  max-height: 85%;
+}
+
+

@@ -1,15 +1,11 @@
-const EXAMINABLE = [
-  'cpu',
-  'not-found'
-];
+import { examinableNameArray, examinableCount } from './examinableNameArray.js';
 
 export class ExamineController {
   constructor() {
     this.examinables = new Map();
-    const path = '/src/html/examinables/';
-    const examinableCount = EXAMINABLE.length;
+    const path = './html/';
     for (let index = 0; index < examinableCount; index++) {
-      const name = EXAMINABLE[index];
+      const name = examinableNameArray[index];
       const filePath = `${path}${name}.html`;
       fetch(filePath)
         .then(response => response.text())

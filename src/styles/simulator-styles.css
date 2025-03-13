@@ -101,4 +101,8 @@ svg {
   max-height: 85%;
 }
 
-
+#Displays.segment-test-active {
+  rect:not(rect[id^=background]) {
+    fill: #DB2638;
+  }
+}

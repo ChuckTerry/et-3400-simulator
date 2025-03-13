@@ -261,6 +261,25 @@ function disableEdgeMiniMenu() {
 }
 
 /**
+ * Handles the segment test mouse down event
+ * @param {MouseEvent} event The event object
+ */
+function segmentTestMouseDownHandler(event) {
+  if (document.querySelector('#simulator-svg').classList.contains('examine-mode') || !globalThis.et3400.powered) {
+    return;
+  }
+  document.querySelector('#Displays').classList.add('segment-test-active');
+}
+
+/**
+ * Handles the segment test mouse up event
+ * @param {MouseEvent} event The event object
+ */
+function segmentTestMouseUpHandler(event) {
+  document.querySelector('#Displays').classList.remove('segment-test-active');
+}
+
+/**
  * Main function for the simulator
  */
 window.addEventListener('load', () => {
@@ -280,4 +299,6 @@ window.addEventListener('load', () => {
   globalThis.programs = programs;
   globalThis.et3400.examineController = new ExamineController();
   document.querySelector('#simulator-svg').addEventListener('click', examineClickHandler);
+  document.querySelector('#Test_Leads').addEventListener('mousedown', segmentTestMouseDownHandler);
+  document.querySelector('#Test_Leads').addEventListener('mouseup', segmentTestMouseUpHandler);
 });

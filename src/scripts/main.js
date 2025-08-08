@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import { programs } from '../programs/programs.js';
 import { Et3400 } from './modules/Et3400.js';
 import { ExamineController } from '../examinables/ExamineController.js';
@@ -234,8 +235,11 @@ function doPopout() {
  * Handles the message event sent from the popout window
  * @param {MessageEvent} event The event object sent from the popout window
  */
-function onMessage(event) {
-  const [action, operand] = event.data.split(':');
+function onMessage({data}) {
+  if (typeof data !== 'string') {
+    data = String(data);
+  }
+  const [action, operand] = data.split(':');
   if (action === 'releaseKey') {
     globalThis.et3400.releaseKey(operand);
   } else if (action === 'pressKey') {

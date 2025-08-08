@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 import { programs } from '../programs/programs.js';
 import { Et3400 } from './modules/Et3400.js';
 import { ExamineController } from '../examinables/ExamineController.js';

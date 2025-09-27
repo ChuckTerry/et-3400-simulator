@@ -53,3 +53,44 @@ export function getQueryObject(string = location.search.slice(1)) {
   }
   return object;
 }
+
+/**
+ * Extracts hexadecimal program from annotated source code
+ * @param {string} annotatedString The human-readable program string
+ * @param {boolean} [includeStartAddress=true] whether to include the start address
+ *      if true: "0000 0123456789ABCDEF"
+ *     if false: "0123456789ABCDEF"
+ */
+export function hexLoadStringFromAnnotatedCode(annotatedString, includeStartAddress = true) {
+	const parsedSourceArray = [];
+	let startAddress = null;
+	let expectedAddress = null;
+	
+	annotatedString.split(/\r?\n/).forEach((string) => {
+		string = string.trim();
+		const lead = string.split(' ')[0];
+		const isAddress = /^[0-9A-Fa-f]{4}/.test(string);
+		if (!isAddress) {
+			return;
+		}
+		string = string.slice(0, 12).trim();
+		const [address, opcode, operand] = string.split(' ');
+		const decimalAddress = parseInt(address, 16);
+		if (expectedAddress === null) {
+			startAddress = address;
+			expectedAddress = decimalAddress;
+		}
+		if (decimalAddress !== expectedAddress) {
+			console.warn(`Address Mismatch: expected ${expectedAddress}, but found ${decimalAddress}`);
+		}
+		
+		const instruction = `${opcode}${operand ?? ''}`;
+		parsedSourceArray.push(instruction);
+		const memoryConsumed = instruction.length / 2;
+		expectedAddress = decimalAddress + memoryConsumed;
+	});
+	const prefix = includeStartAddress ? `${startAddress} ` : '';
+	const hexProgram = parsedSourceArray.join('');
+	
+	return `${prefix}${hexProgram}`;
+}

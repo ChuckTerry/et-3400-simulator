@@ -20,6 +20,26 @@ export class Memory {
   }
 
   /**
+   * loads A hex string into memory.  Accepts two forms, one with a starting address, another without:
+   * `0000 0123456789ABCDEF`
+   * `0123456789ABCDEF`
+   * @param {string} Hex Loader String
+   */
+  loadHexString(string) {
+    const loadArray = string.split(' ');
+    if (loadArray.length === 1) {
+      loadArray.unshift(0);
+    }
+    console.dir(loadArray)
+    const startAddress = parseInt(loadArray[0], 16);
+    const byteArray = loadArray[1].match(/.{1,2}/g);
+    const bytes = byteArray.length;
+    for (let index = 0; index < bytes; index++) {
+      this.writeByte(startAddress + index, parseInt(byteArray[index], 16));
+    }
+  }
+
+  /**
    * Read a byte from the memory space
    * @param {number} address The address to read from
    * @returns {number} The byte at the given address
@@ -37,3 +57,4 @@ export class Memory {
     this.content[address] = content;
   }
 }
+

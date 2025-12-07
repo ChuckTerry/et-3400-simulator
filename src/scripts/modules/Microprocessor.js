@@ -998,7 +998,7 @@ export class Microprocessor {
 
     /**
      * No Operation
-     * @description Only cause Program COunter to Increment by One.
+     * @description Only cause Program Counter to Increment by One.
      */
     NOP() { }
 

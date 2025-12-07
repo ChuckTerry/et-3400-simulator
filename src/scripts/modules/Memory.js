@@ -54,7 +54,7 @@ export class Memory {
      * @param {number} content The content to write
      */
     writeByte(address, content) {
-        if (address > 0xFC00) {
+        if (address >= 0xFC00) {
             console.error(`Failed to write ${content.toString(16).toUpperCase()} to ROM address ${address.toString(16).toUpperCase()}`);
         } else {
             this.content[address] = content;

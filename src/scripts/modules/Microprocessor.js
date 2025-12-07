@@ -150,7 +150,7 @@ export class Microprocessor {
     }
 
     /**
-     * Caluculate Negative Flag
+     * Calculate Negative Flag
      * @description Calculates and sets the negative flag based on ARG.
      * @param {number} ARG 
      */

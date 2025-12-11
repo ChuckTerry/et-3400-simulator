@@ -70,7 +70,7 @@ export const sample4Annotated = `
 0052 08
 0053 08
 0054 BD FE52 OUT     JSR     OUTSTR    OUTPUT CHARACTER STRING
-               OUTPUT STRING STORESD HERE
+               OUTPUT STRING STORED HERE
 0057 00              FCB    $00,$00,$00,$00,$00,$80
 0058 00
 0059 00

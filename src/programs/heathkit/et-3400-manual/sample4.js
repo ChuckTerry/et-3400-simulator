@@ -21,7 +21,7 @@ export const sample4Annotated = `
 001A 4C              INC A            MOVE STRING UP ONE CHARACTER 
 001B 97 07           STA A   MORE+1   NEW FIRST CHARACTER
 001D 81 25           CMP A   #$25     LAST CHARACTER TO "H" YET?
-001F 26 E3           BNE     NEXT     BUILD NEXT STRING
+001F 26 E2           BNE     NEXT     BUILD NEXT STRING
 0021 20 DD           BRA     START    DO AGAIN
 0023 CE 6000 HOLD    LDX     #$6000   TIME TO WAIT
 0026 09      WAIT    DEX

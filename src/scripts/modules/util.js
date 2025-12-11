@@ -6,10 +6,10 @@
  * @returns {string} The padded string.
  */
 function padLeft(string = '', character = '', length = 0) {
-  const padLength = length - string.length;
-  return padLength < 1
-    ? string
-    : `${character.repeat(padLength) }${string}`;
+    const padLength = length - string.length;
+    return padLength < 1
+        ? string
+        : `${character.repeat(padLength)}${string}`;
 }
 
 /**
@@ -18,11 +18,11 @@ function padLeft(string = '', character = '', length = 0) {
  * @returns {string} The padded binary string.
  */
 export function padByteBinary(number = 0) {
-  if (typeof number === 'string') {
-    number = Number.parseInt(number, 10);
-  }
-  const result = padLeft(number.toString(2), '0', 8);
-  return result.length < 9 ? result : result.substr(-8);
+    if (typeof number === 'string') {
+        number = Number.parseInt(number, 10);
+    }
+    const result = padLeft(number.toString(2), '0', 8);
+    return result.length < 9 ? result : result.substr(-8);
 }
 
 /**
@@ -31,11 +31,11 @@ export function padByteBinary(number = 0) {
  * @returns {string} The padded hex string
  */
 export function padWordHex(number = 0) {
-  if (typeof number === 'string') {
-    number = Number.parseInt(number, 10);
-  }
-  const result = padLeft(number.toString(16), '0', 4);
-  return result.length < 5 ? result : result.substr(-4);
+    if (typeof number === 'string') {
+        number = Number.parseInt(number, 10);
+    }
+    const result = padLeft(number.toString(16), '0', 4);
+    return result.length < 5 ? result : result.substr(-4);
 }
 
 /**
@@ -44,14 +44,14 @@ export function padWordHex(number = 0) {
  * @returns {object} The object representation of the query string.
  */
 export function getQueryObject(string = location.search.slice(1)) {
-  const object = {};
-  const kvArray = string.split('&');
-  const propertyCount = kvArray.length;
-  for (let index = 0; index < propertyCount; index++) {
-    const [key, value] = kvArray[index].split('=');
-    object[key] = value;
-  }
-  return object;
+    const object = {};
+    const kvArray = string.split('&');
+    const propertyCount = kvArray.length;
+    for (let index = 0; index < propertyCount; index++) {
+        const [key, value] = kvArray[index].split('=');
+        object[key] = value;
+    }
+    return object;
 }
 
 /**
@@ -62,35 +62,34 @@ export function getQueryObject(string = location.search.slice(1)) {
  *     if false: "0123456789ABCDEF"
  */
 export function hexLoadStringFromAnnotatedCode(annotatedString, includeStartAddress = true) {
-	const parsedSourceArray = [];
-	let startAddress = null;
-	let expectedAddress = null;
-	
-	annotatedString.split(/\r?\n/).forEach((string) => {
-		string = string.trim();
-		const lead = string.split(' ')[0];
-		const isAddress = /^[0-9A-Fa-f]{4}/.test(string);
-		if (!isAddress) {
-			return;
-		}
-		string = string.slice(0, 12).trim();
-		const [address, opcode, operand] = string.split(' ');
-		const decimalAddress = parseInt(address, 16);
-		if (expectedAddress === null) {
-			startAddress = address;
-			expectedAddress = decimalAddress;
-		}
-		if (decimalAddress !== expectedAddress) {
-			console.warn(`Address Mismatch: expected ${expectedAddress}, but found ${decimalAddress}`);
-		}
-		
-		const instruction = `${opcode}${operand ?? ''}`;
-		parsedSourceArray.push(instruction);
-		const memoryConsumed = instruction.length / 2;
-		expectedAddress = decimalAddress + memoryConsumed;
-	});
-	const prefix = includeStartAddress ? `${startAddress} ` : '';
-	const hexProgram = parsedSourceArray.join('');
-	
-	return `${prefix}${hexProgram}`;
+    const parsedSourceArray = [];
+    let startAddress = null;
+    let expectedAddress = null;
+
+    annotatedString.split(/\r?\n/).forEach((string) => {
+        string = string.trim();
+        const isAddress = /^[0-9A-Fa-f]{4}/.test(string);
+        if (!isAddress) {
+            return;
+        }
+        string = string.slice(0, 12).trim();
+        const [address, opcode, operand] = string.split(' ');
+        const decimalAddress = parseInt(address, 16);
+        if (expectedAddress === null) {
+            startAddress = address;
+            expectedAddress = decimalAddress;
+        }
+        if (decimalAddress !== expectedAddress) {
+            console.warn(`Address Mismatch: expected ${expectedAddress}, but found ${decimalAddress}`);
+        }
+
+        const instruction = `${opcode}${operand ?? ''}`;
+        parsedSourceArray.push(instruction);
+        const memoryConsumed = instruction.length / 2;
+        expectedAddress = decimalAddress + memoryConsumed;
+    });
+    const prefix = includeStartAddress ? `${startAddress} ` : '';
+    const hexProgram = parsedSourceArray.join('');
+
+    return `${prefix}${hexProgram}`;
 }

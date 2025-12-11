@@ -12,7 +12,7 @@ export const sample4Annotated = `
 0006 A6 00   MORE    LDA A   0,X      GET CHARACTER
 0008 A7 2D           STA A   OUT+3-MESSA,X  STORE CHAR. AT OUT PLUS
 000A 08              INX              NEXT CHARACTER
-000B 8C 0030         CPX     $#30     FULL STRING YET?
+000B 8C 0030         CPX     #$30     FULL STRING YET?
 000E 26 F6           BNE     MORE
 0010 8D 11           BSR     HOLD     HOLD DISPLAY
 0012 BD FCBC         JSR     REDIS    FIRST CHAR TO "H" DISPLAY

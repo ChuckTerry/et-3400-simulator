@@ -35,25 +35,25 @@ export const sample5Annotated = `
 0080 00
 0081 80
                * DP LIT FIND SLEECTED KEY
-0082 BD FDF4        SR       INCH     LOOK FOR KEY
-0085 C6 86   KEY    DA B     #KEY+1   GET KEY VALUE
-0087 11             BA                IS IT RIGHT KEY?
-0088 27 14          EQ       YES      IF CORRECT
-008A 22 2A          HI       HIGH     IF GREATER THAN KEY+1 VALUE
-008C BD FD8D        SR       OUTST0   OUTPUT STRING
-008F 00             CB       $00,$00,$00,$00,$0E,$7E,$80  LO
+0082 BD FDF4        JSR       INCH     LOOK FOR KEY
+0085 C6 86   KEY    LDA B     #KEY+1   GET KEY VALUE
+0087 11             CBA                IS IT RIGHT KEY?
+0088 27 14          BEQ       YES      IF CORRECT
+008A 22 2A          BHI       HIGH     IF GREATER THAN KEY+1 VALUE
+008C BD FD8D        JSR       OUTST0   OUTPUT STRING
+008F 00             FCB       $00,$00,$00,$00,$0E,$7E,$80  LO
 0090 00
 0091 00
 0092 00
 0093 0E
 0094 7E
 0095 80
-0096 CE 6000 HOLD   OX       #$6000   TIME TO HOLD DISPLAY
-0099 09      WAIT   EX
-009A 26 FD          NE       WAIT     LONG ENOUGH YET
-009C 20 DB          RA       OUTDP    TRY AGAIN
-009E BD FD8D YES    SR       OUTST0   OUTPUT STRING
-00A1 00             CB       $00,$00,$3B,$4F,$5B,$A0  YES!
+0096 CE 6000 HOLD   LDX       #$6000   TIME TO HOLD DISPLAY
+0099 09      WAIT   DEX
+009A 26 FD          BNE       WAIT     LONG ENOUGH YET
+009C 20 DB          BRA       OUTDP    TRY AGAIN
+009E BD FD8D YES    JSR       OUTST0   OUTPUT STRING
+00A1 00             FCB       $00,$00,$3B,$4F,$5B,$A0  YES!
 00A2 00
 00A3 3B
 00A4 4F

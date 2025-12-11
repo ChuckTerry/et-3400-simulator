@@ -1,0 +1,85 @@
+import { hexLoadStringFromAnnotatedCode } from '../../../scripts/modules/util.js';
+
+export const sample4Annotated = `
+
+                                    SAMPLE 4
+                    OUTPUTS THE SAME MESSAGE AS PROGRAM 3
+                    IN TICKER TAPE FASHION
+                    USES MONITOR SUBROUTINES REDIS AND OUTSTR
+
+0000 7F 0007 START   CLR     MORE+1   CLEAR POINTER
+0003 CE 002A NEXT    LDX     #MESSA   MESSAGE ADDRESS 
+0006 A6 00   MORE    LDA A   0,X      GET CHARACTER
+0008 A7 2D           STA A   OUT+3-MESSA,X  STORE CHAR. AT OUT PLUS
+000A 08              INX              NEXT CHARACTER
+000B 8C 0030         CPX     #$30     FULL STRING YET?
+000E 26 F6           BNE     MORE
+0010 8D 11           BSR     HOLD     HOLD DISPLAY
+0012 BD FCBC         JSR     REDIS    FIRST CHAR TO "H" DISPLAY
+0015 BD 0054         JSR     OUT
+0018 96 07           LDA A   MORE+1   FIRST CHARACTER POINTER
+001A 4C              INC A            MOVE STRING UP ONE CHARACTER 
+001B 97 07           STA A   MORE+1   NEW FIRST CHARACTER
+001D 81 25           CMP A   #$25     LAST CHARACTER TO "H" YET?
+001F 26 E2           BNE     NEXT     BUILD NEXT STRING
+0021 20 DD           BRA     START    DO AGAIN
+0023 CE 6000 HOLD    LDX     #$6000   TIME TO WAIT
+0026 09      WAIT    DEX
+0027 26 FD           BNE     WAIT     TIME OUT YET?
+0029 39              RTS
+002A 08      MESSA   FCB     $08,$08,$08,$08,$08,$08  ------
+002B 08
+002C 08
+002D 08
+002E 08
+002F 08
+0030 3B              FCB     $3B,$7E,$3E,$05,$00,$00  YOUR
+0031 7E
+0032 3E
+0033 05
+0034 00
+0035 00
+0036 79              FCB     $79,$33,$7E,$7E,$00,$00  3400
+0037 33
+0038 7E
+0039 7E
+003A 00
+003B 00
+003C 30              FCB     $30,$5B,$00,$00,$3E,$67  IS UP
+003D 5B
+003E 00
+003F 00
+0040 3E
+0041 67
+0042 00              FCB     $00,$00,$7D,$15,$3D,$00,$00  AND
+0043 00
+0044 7D
+0045 15
+0046 3D
+0047 00
+0048 00
+0049 05              FCB    $05,$1C,$15,$15,$10,$15  RUNNIN
+004A 1C
+004B 15
+004C 15
+004D 10
+004E 15
+004F 08              FCB    $08,$08,$08,$08,$08  -----
+0050 08
+0051 08
+0052 08
+0053 08
+0054 BD FE52 OUT     JSR     OUTSTR    OUTPUT CHARACTER STRING
+               OUTPUT STRING STORED HERE
+0057 00              FCB    $00,$00,$00,$00,$00,$80
+0058 00
+0059 00
+005A 00
+005B 00
+005C 00
+005D 80
+005E 39
+
+`;
+
+export const sample4 = hexLoadStringFromAnnotatedCode(sample4Annotated);

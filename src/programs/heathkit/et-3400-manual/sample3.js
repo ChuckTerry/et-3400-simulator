@@ -1,0 +1,76 @@
+import { hexLoadStringFromAnnotatedCode } from '../../../scripts/modules/util.js';
+
+export const sample3Annotated = `
+
+                                SAMPLE 3
+                    OUTPUTS MESSAGE BY DISPLAYING UP TO SIX
+                    CHARACTER WORD ONE WORD AT A TIME
+                    USES MONITOR SUBROUTINE OUTST0
+                    NOTE: DP MUST BE LIT TO INDICATE END OF STRING
+                    TO EXIT OUTSTR. DP IS PLACED IN THE
+                    SEVENTH DISPLAY POSITION TO FULFILL THIS
+                    REQUIREMENT WITHOUT ACTUALLY BEING DISPLAYED.
+
+0060 BD FD8D START   JSR     OUTST0   LEFT DISPLAY  OUT WORD
+0063 00              FCB     $00,$3B,$7E,$3E,$05,$00,$80  YOUR
+0064 3B
+0065 7E
+0066 3E
+0067 05
+0068 00
+0069 80
+006A 8D 3F           BSR     HOLD     HOLD DISPLAY
+006C BD FDBD         JSR     OUTST0   LEFT DISPLAY  OUT WORD
+006F 00              FCB     $00,$79,$33,$7E,$7E,$00,$80  3400
+0070 79
+0071 33
+0072 7E
+0073 7E
+0074 00
+0075 80
+0076 8D 33           BSR     HOLD     HOLD DISPLAY
+0078 BD FD8D         JSR     OUTST0   LEFT DISPLAY  OUT WORD
+007B 00              FCB     $00,$00,$30,$5B,$00,$00,$80  IS
+007C 00
+007D 30
+007E 5B
+007F 00
+0080 00
+0081 80
+0082 8D 27           BSR     HOLD     HOLD DISPLAY
+0084 BD FD8D         JSR     OUTST0   LEFT DISPLAY  OUT WORD
+0087 00              FCB     $00,$00,$3E,$67,$00,$00,$80 UP
+0088 00
+0089 3E
+008A 67
+008B 00
+008C 00
+008D 80
+008E 8D 1B           BSR     HOLD     HOLD DISPLAY
+0090 BD FD8D         JSR     OUTST0   LEFT DISPLAY  OUT WORD
+0093 00              FCB     $00,$00,$7D,$15,$3D,$00,$80  AND
+0094 00
+0095 7D
+0096 15
+0097 3D
+0098 00
+0099 80
+009A 8D 0F           BSR     HOLD     HOLD DISPLAY
+009C BD FD8D         JSR     OUTST0   LEFT DISPLAY  OUT WORD
+009F 05              FCB     $05,$1C,$15,$15,$10,$15,$80  RUNNIN
+00A0 1C
+00A1 15
+00A2 15
+00A3 10
+00A4 15
+00A5 80
+00A6 8D 03           BSR     HOLD     HOLD DISPLAY
+00A8 7E 0060         JMP     OUTST0   LEFT DISPLAY  OUT WORD
+00AB CE FF00 HOLD    LDX     #$FF00   TIME TO WAIT
+00AE 09      WAIT    DEX
+00AF 26 FD           BNE     WAIT     TIME OUT YET?
+00B1 39              RTS
+
+`;
+
+export const sample3 = hexLoadStringFromAnnotatedCode(sample3Annotated);

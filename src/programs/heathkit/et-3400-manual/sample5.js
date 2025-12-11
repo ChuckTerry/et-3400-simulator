@@ -1,0 +1,81 @@
+import { hexLoadStringFromAnnotatedCode } from '../../../scripts/modules/util.js';
+export const sample5Annotated = `
+
+                               SAMPLE 5
+                   THIS PROGRAM CONTINUOUSLY CHANGES THE HEX
+                   VALUE STORED AT KEY+1 UNTIL ANY HEX
+                   KEY IS DEPRESSED.  THE RIGHT DP IS LIT
+                   TO INDICATE A VALUE HAS BEEN SET.
+                   THE USER THEN DEPRESSES THE VARIOUS
+                   HEX KEYS TO LOOK FOR THE SELECTED VALUE.
+                   THE RELATIONSHIP OF DEPRESSED TO CORRECT KEY
+                   IS MOMENTARILY DISPLAYED AS HI OR LO.
+                   DP AGAIN LIGHTS INDICATING TRY AGAIN.
+                   DEPRESSING THE CORRECT KEY DISPLAYS YES!
+                   WHICH REMAINS UNTIL ANY KEY IS DEPRESSED
+                   SETTING A NEW VALUE TO FIND.
+                   USES MONITOR SUB ROUTINES ENCODE,OUTST0, INCH
+0060 7F 0086 START  CLR      KEY+1    CLEAR KEY POINTER
+0063 C6 20   ILL    LDA B    #$20     VIOLATION COUNT
+0065 BD FDBB ILL1   JSR      ENCODE   WAIT FOR ILLEGAL INTERVAL
+0068 25 F9          BCS      ILL      STILL ILLEGAL?
+006A 5A             DEC B
+006B 26 F8          BNE      ILL1     NOT A FELONY
+006D C6 20   LEGAL  LDA B    %$20     TIME UNTIL PAROLE
+006F 8D 38          BSR      CODE     CHANGE KEY TO FIND
+0071 BD FDBB LEGAL1 JSR      ENCODE   KEY TO FIND SET?
+0074 24 F7          BCC      LEGAL
+0076 5A             DEC B
+0077 26 F8          BNE      LEGAL1   GOOD KEY?
+0079 BD FD8D OUTDP  JSR      OUTST0   OUTPUT STRING
+007C 00             FCB      $00,$00,$00,$00,$00,$80  DP TO "C"
+007D 00
+007E 00
+007F 00
+0080 00
+0081 80
+               * DP LIT FIND SLEECTED KEY
+0082 BD FDF4        JSR       INCH     LOOK FOR KEY
+0085 C6 86   KEY    LDA B     #KEY+1   GET KEY VALUE
+0087 11             CBA                IS IT RIGHT KEY?
+0088 27 14          BEQ       YES      IF CORRECT
+008A 22 2A          BHI       HIGH     IF GREATER THAN KEY+1 VALUE
+008C BD FD8D        JSR       OUTST0   OUTPUT STRING
+008F 00             FCB       $00,$00,$00,$00,$0E,$7E,$80  LO
+0090 00
+0091 00
+0092 00
+0093 0E
+0094 7E
+0095 80
+0096 CE 6000 HOLD   LDX       #$6000   TIME TO HOLD DISPLAY
+0099 09      WAIT   DEX
+009A 26 FD          BNE       WAIT     LONG ENOUGH YET
+009C 20 DB          BRA       OUTDP    TRY AGAIN
+009E BD FD8D YES    JSR       OUTST0   OUTPUT STRING
+00A1 00             FCB       $00,$00,$3B,$4F,$5B,$A0  YES!
+00A2 00
+00A3 3B
+00A4 4F
+00A5 5B
+00A6 A0
+00A7 20 B7          BRA      START    DO AGAIN
+00A9 96 86   CODE   LDA A    KEY+1    CURRENT KEY VALUE
+00AB 4C             INC A             NEXT KEY
+00AC 97 86          STA A    KEY+1    KEY TO FIND
+00AE 81 10          CMP A    #$10     CAN'T BE GREATER THAN F
+00B0 26 03          BNE      GOOD
+00B2 7F 0086        CLR      KEY+1    MAKE IT 0
+00B5 39      GOOD   RTS
+00B6 BD FD8D HIGH   JSR      OUTST0   OUTPUT STRING
+00B9 37             FCB      $37,$30,$00,$00,$00,$00,$80  HI
+00BA 30
+00BB 00
+00BC 00
+00BD 00
+00BE 00
+00BF 80
+00C0 7E 0096        JMP      HOLD
+
+`;
+export const sample5 = hexLoadStringFromAnnotatedCode(sample5Annotated);

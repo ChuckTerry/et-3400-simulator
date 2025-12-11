@@ -20,7 +20,7 @@ export const sample3Annotated = `
 0068 00
 0069 80
 006A 8D 3F           BSR     HOLD     HOLD DISPLAY
-006C BD FDB8         JSR     OUTST0   LEFT DISPLAY  OUT WORD
+006C BD FDBD         JSR     OUTST0   LEFT DISPLAY  OUT WORD
 006F 00              FCB     $00,$79,$33,$7E,$7E,$00,$80  3400
 0070 79
 0071 33
@@ -65,7 +65,7 @@ export const sample3Annotated = `
 00A4 15
 00A5 80
 00A6 8D 03           BSR     HOLD     HOLD DISPLAY
-00A8 7E 0060         JSR     OUTST0   LEFT DISPLAY  OUT WORD
+00A8 7E 0060         JMP     OUTST0   LEFT DISPLAY  OUT WORD
 00AB CE FF00 HOLD    LDX     #$FF00   TIME TO WAIT
 00AE 09      WAIT    DEX
 00AF 26 FD           BNE     WAIT     TIME OUT YET?

@@ -45,7 +45,7 @@ export const sample4Annotated = `
 0039 7E
 003A 00
 003B 00
-003C 30              FCB     $30,$5B,$00,$00,3E,$67  IS UP
+003C 30              FCB     $30,$5B,$00,$00,$3E,$67  IS UP
 003D 5B
 003E 00
 003F 00

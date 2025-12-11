@@ -38,7 +38,7 @@ export const sample6Annotated = `
 0026 11              CBA              TIME TO CLEAR?
 0027 25 01          BCS     STORE    NO
 0029 4F              CLR A            
-002A A7 00   STORE   STA A   90,X     STORE NEW TIME
+002A A7 00   STORE   STA A   0,X     STORE NEW TIME
 002C 09              DEX              NEXT TIME RMB
 002D 07              TPA              
 002E 88 01           EOR A   #1       COMPLEMENT CARRY BIT

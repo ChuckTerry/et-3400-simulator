@@ -113,7 +113,7 @@ export class Microprocessor {
             const func = globalThis.DCD[opcode];
             if (typeof func === 'function') {
                 this.operand = func();
-                this.et3400.microprocessor._lambda(opcode);
+                this._lambda(opcode);
             }
         }
         this.#fetchDecodeExecuteLoopTimer = window.setTimeout(() => this.fetchDecodeExecute(), 50);

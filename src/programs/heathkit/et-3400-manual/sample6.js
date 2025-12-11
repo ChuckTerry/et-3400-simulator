@@ -36,7 +36,7 @@ export const sample6Annotated = `
 0023 89 00           ADC A   #0       INCREMENT IF NECESSARY
 0025 19              DAA              FIX TO DECIMAL
 0026 11              CBA              TIME TO CLEAR?
-0027 25 091          BCS     STORE    NO
+0027 25 01          BCS     STORE    NO
 0029 4F              CLR A            
 002A A7 00   STORE   STA A   90,X     STORE NEW TIME
 002C 09              DEX              NEXT TIME RMB

@@ -1,6 +1,6 @@
 import { StatusRegister } from './StatusRegister.js';
 /**
- * @typedef {import('../Et3400.js').Et3400} Et3400
+ * @typedef {import('./Et3400.js').Et3400} Et3400
  */
 
 /**

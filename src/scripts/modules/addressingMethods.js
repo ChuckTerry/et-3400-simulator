@@ -167,7 +167,7 @@ function reserved() {
 
 /**
  * Undocumented Addressing Method
- * This addressing method is including for debugging purposes.
+ * This addressing method is included for debugging purposes.
  * 
  * @returns {string}
  */

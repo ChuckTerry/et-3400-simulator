@@ -66,7 +66,11 @@ export function hexLoadStringFromAnnotatedCode(annotatedString, includeStartAddr
     let startAddress = null;
     let expectedAddress = null;
 
-    annotatedString.split(/\r?\n/).forEach((string) => {
+    const codeLines = annotatedString.split(/\r?\n/).filter((line) => {
+        return line.trim() !== '' && !line.startsWith(' ');
+    });
+
+    codeLines.forEach((string) => {
         string = string.trim();
         const isAddress = /^[0-9A-Fa-f]{4}/.test(string);
         if (!isAddress) {

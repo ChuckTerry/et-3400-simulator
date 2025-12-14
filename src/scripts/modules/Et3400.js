@@ -190,7 +190,7 @@ export class Et3400 {
                         string += ' ';
                         continue;
                     }
-                    const displayCharacter = '_|_.'.charAt(columnNumber);
+                    const displayCharacter = '|_|.'.charAt(columnNumber);
                     const shift = [0, 6, 0, 0, 1, 0, 5, 0, 2, 3, 4, 7][number];
                     const stillLit = (this.displayLeds[ledNumber] & (1 << shift)) !== 0;
                     if (stillLit === currentlyLit) {

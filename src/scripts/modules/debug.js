@@ -1,5 +1,5 @@
 export function logKeyBindings() {
-  console.log(`Default Key Bindings
+    console.log(`Default Key Bindings
   
 Trainer     Function,
   Key       Physical Key

@@ -67,7 +67,7 @@
 
 svg {
     width: 800px;
-    padding-left:18px;
+    padding-left: 18px;
 }
 
 .examine-mode {
@@ -113,6 +113,6 @@ svg {
     }
 }
 
-#Keypad.autoload {
+#Keypad .autoload {
     filter: brightness(200%);
 }

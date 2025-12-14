@@ -54,7 +54,7 @@ function makeClickListener(keyData) {
         window.setTimeout(() => animateKeyUp(element), 100);
         // If there's no power, do nothing
         if (!globalThis.et3400.powered) return;
-        // Prevent default action in case the active pagte is embedded
+        // Prevent default action in case the active page is embedded
         event.preventDefault();
         // Handle the logic of a key press
         globalThis.et3400.pressKey(keyCode);

@@ -67,7 +67,7 @@ export function hexLoadStringFromAnnotatedCode(annotatedString, includeStartAddr
     let expectedAddress = null;
 
     const codeLines = annotatedString.split(/\r?\n/).filter((line) => {
-        return line.trim() !== '' && !line.startsWith(' ') ;
+        return line.trim() !== '' && !line.startsWith(' ');
     });
 
     codeLines.forEach((string) => {

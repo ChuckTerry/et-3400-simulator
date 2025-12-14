@@ -22,7 +22,7 @@ export const sample6Annotated = `
 0007 09      DELAY   DEX              
 0008 26 FD           BNE     DELAY    WAIT ONE SECOND
 000A C6 60           LDA B   #$60     SIXTY SECONDS,SIXTY MINUTES
-000C CD              SEC              ALWAYS INCREMENT SECONDS
+000C 0D              SEC              ALWAYS INCREMENT SECONDS
 000D 8D 0F           BSR     INCS     INCREMENT SECONDS
 000F 8D 10           BSR     INMH     INCREMENT MINUTES IF NEEDED
 0011 C6 13           LDA B   #$13     TWELVE HOUR CLOCK

@@ -12,26 +12,12 @@
     <script src="./scripts/main.js" type="module"></script>
   </head>
   <body>
-    <aside id="menu-bar-right" class="float-right menu-bar">
-      <button type="button" class="menu expand">
-        <img src="./images/expand-small.svg" alt="Expand Menu" />
-      </button>
-      <button type="button" class="menu io-power" title="Power">
-        <img src="./images/io-power-small.svg" alt="Power" /> <span class="hidden">Power</span>
-      </button>
-      <button type="button" class="menu examine" title="Examine">
-        <img src="./images/examine-small.svg" alt="Examine" /> <span class="hidden">Examine</span>
-      </button>
-      <button type="button" class="menu keybindings" title="Key Bindings">
-        <img src="./images/keypad-small.svg" alt="Keybindings" /> <span class="hidden">Key Bindings</span>
-      </button>
-      <button type="button" class="menu options" title="Options">
-        <img src="./images/options-gear-small.svg" alt="Options" /> <span class="hidden">Options</span>
-      </button>
-      <button type="button" class="menu help" title="Help">
-        <img src="./images/help-small.svg" alt="Help" /> <span class="hidden">Help</span>
-      </button>
-    </aside>
+    <menu>
+      <li><button id="menu-power-button">Power <span id="menu-power-status">Off</span></button></li>
+      <li><button id="menu-autoload-button">Auto-Load Program</button></li>
+      <li><button id="menu-examine-button">Examine</button></li>
+      <li><button id="menu-popout-button">Open Pop-out</button></li>
+    </menu>
     <div class="basic-interface">
       <div class="float-right">
         <div class="float-right keypad-group">
@@ -76,9 +62,6 @@
       </div>
     </div>
     <div class="trainer-simulation">
-      <div>
-        <button type="button" class="meta-button hidden" id="button-popout">Open Pop-Out</button>
-      </div>
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1321.806 1269.333" id="simulator-svg">
         <defs>
           <style>

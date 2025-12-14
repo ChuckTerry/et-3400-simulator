@@ -20,7 +20,16 @@ const svgElementMap = {
     'ESCAPE': '#reset'
 };
 
+/**
+ * AutoLoader module to load programs into the ET-3400 simulator
+ */
 export class AutoLoader {
+
+    /**
+     * Create an AutoLoader instance
+     * 
+     * @param {import('./Microprocessor.js').Et3400} et3400 
+     */
     constructor(et3400) {
         this.et3400 = et3400;
         this.clearState = false;
@@ -33,6 +42,13 @@ export class AutoLoader {
         }));
     }
 
+    /**
+     * Load a program into the ET-3400 by simulating key presses
+     * 
+     * @param {string} program A string of hex digits and spaces representing the program to load
+     * @param {number} step The current step in the loading process
+     * @returns {void}
+     */
     loadProgram(program, step = -1) {
         if (program.length === 0) {
             if (this.clearState !== false) {
@@ -62,22 +78,29 @@ export class AutoLoader {
             return;
         }
         const character = program[0];
-        const key = this.keyMap[character];
         const element = this.elementMap[character];
         const isPress = step % 2 === 1;
-        if (isPress) {
-            this.et3400.pressKey(key);
-            element.classList.add('autoload');
-        } else {
-            this.et3400.releaseKey(key);
-            element.classList.remove('autoload');
-            program = program.slice(1);
+        if (element) {
+            const key = this.keyMap[character];
+            if (isPress) {
+                this.et3400.pressKey(key);
+                element.classList.add('autoload');
+            } else {
+                this.et3400.releaseKey(key);
+                element.classList.remove('autoload');
+                program = program.slice(1);
+            }
         }
         window.setTimeout(() => {
             this.loadProgram(program, step + 1);
         }, isPress ? 200 : 50);
     }
 
+    /**
+     * Clear the program memory by loading 0x01 to memory space
+     * 
+     * @param {number} replacement 
+     */
     clearProgram(replacement = 0x01) {
         if (this.clearState === false) {
             replacement = (replacement & 0xFF).toString(16).toUpperCase().padStart(2, '0');

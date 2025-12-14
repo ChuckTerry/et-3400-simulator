@@ -1,49 +1,50 @@
 :root {
-  --resistor-black: #0F0F0F;
-  --resistor-brown: #754E3C;
-  --resistor-red: #CF2027;
-  --resistor-orange: #D86F21;
-  --resistor-yellow: #ECE70C;
-  --resistor-green: #0A8C44;
-  --resistor-blue: #3B6DD1;
-  --resistor-violet: #8920E5;
-  --resistor-grey: #777777;
-  --resistor-white: #F0F0F0;
+    --resistor-black: #0F0F0F;
+    --resistor-brown: #754E3C;
+    --resistor-red: #CF2027;
+    --resistor-orange: #D86F21;
+    --resistor-yellow: #ECE70C;
+    --resistor-green: #0A8C44;
+    --resistor-blue: #3B6DD1;
+    --resistor-violet: #8920E5;
+    --resistor-grey: #777777;
+    --resistor-white: #F0F0F0;
 }
+
 
 .r2 .band-1,
 .r2 .band-3 {
-  fill: var(--resistor-brown);
+    fill: var(--resistor-brown);
 }
 
 .r2 .band-2 {
-  fill: var(--resistor-green);
+    fill: var(--resistor-green);
 }
 
 #power-led-glow,
 .power-switch g,
 .dip-switch:not(.on)>.dip-on,
 .dip-switch.on>.dip-off {
-  opacity: 0;
+    opacity: 0;
 }
 
 #power-led-glow.on,
 .power-switch.off #power-switch-off,
 .power-switch.on #power-switch-on,
 .dip-switch.on>.dip-on {
-  opacity: 1;
+    opacity: 1;
 }
 
-.power-on #power-led-body {
-  fill: #DD1717;
-}
+.power-on {
 
-.power-on #power-led-glare {
-  fill: #FF5555;
-}
+    #power-led-body,
+    #power-led-deep {
+        fill: #DD1717;
+    }
 
-.power-on #power-led-deep {
-  fill: #DD1717;
+    #power-led-glare {
+        fill: #FF5555;
+    }
 }
 
 .seven-segment-display.a>.a,
@@ -54,56 +55,64 @@
 .seven-segment-display.f>.f,
 .seven-segment-display.g>.g,
 .seven-segment-display.dp>.dp {
-  fill: #db2638;
+    fill: #DB2638;
 }
 
 .trainer-simulation {
-  margin-top: 12px;
-  display: block;
-  margin-left: auto;
-  max-width: 2000px;
+    margin-top: 12px;
+    display: block;
+    margin-left: auto;
+    max-width: 2000px;
 }
 
 svg {
-  width: 800px;
+    width: 800px;
+    padding-left:18px;
 }
 
-.examine-mode .examinable {
-  filter:
-    drop-shadow(1px 1px 2px rgba(30, 200, 70, 0.35))
-    drop-shadow(-1px -1px 2px rgba(30, 200, 70, 0.35))
-    drop-shadow(1px -1px 2px rgba(30, 200, 70, 0.35))
-    drop-shadow(-1px 1px 2px rgba(30, 200, 70, 0.35))
-    brightness(1.1);
-  transition: filter 0.5s;
-}
+.examine-mode {
+    .examinable {
+        filter: drop-shadow(1px 1px 2px rgba(30, 200, 70, 0.35)) drop-shadow(-1px -1px 2px rgba(30, 200, 70, 0.35)) drop-shadow(1px -1px 2px rgba(30, 200, 70, 0.35)) drop-shadow(-1px 1px 2px rgba(30, 200, 70, 0.35)) brightness(1.1);
+        transition: filter 0.5s;
 
-.examine-mode .examinable:hover {
-  filter:
-    drop-shadow(1px 1px 2px rgba(30, 200, 70, 0.7))
-    drop-shadow(-1px -1px 2px rgba(30, 200, 70, 0.7))
-    drop-shadow(1px -1px 2px rgba(30, 200, 70, 0.7))
-    drop-shadow(-1px 1px 2px rgba(30, 200, 70, 0.7))
-    brightness(1.3);
-  transition: filter 0.5s;
-  transform-origin: center;
-  transform-box: fill-box;
-  scale: 1.1;
-  cursor: pointer;
-}
+        &:hover {
+            filter:
+                drop-shadow(1px 1px 2px rgba(30, 200, 70, 0.7)) drop-shadow(-1px -1px 2px rgba(30, 200, 70, 0.7)) drop-shadow(1px -1px 2px rgba(30, 200, 70, 0.7)) drop-shadow(-1px 1px 2px rgba(30, 200, 70, 0.7)) brightness(1.3);
+            transition: filter 0.5s;
+            transform-origin: center;
+            transform-box: fill-box;
+            scale: 1.1;
+            cursor: pointer;
+        }
+    }
 
-.examine-mode g:not(.examinable) {
-  filter: brightness(0.9);
-}
-
-#examine-dialog {
-  max-width: 60%;
-  max-height: 85%;
+    g:not(.examinable) {
+        filter: brightness(0.9);
+    }
 }
 
 #Displays.segment-test-active {
-  rect:not(rect[id^=background]),
-  circle[id^=dp] {
-    fill: #DB2638;
-  }
+
+    rect:not(rect[id^=background]),
+    circle[id^=dp] {
+        fill: #DB2638;
+    }
+}
+
+#Test_Leads,
+.dip-switch,
+.power-switch,
+#Keypad>g {
+    cursor: pointer;
+    filter: none;
+    transition: filter 0.5s;
+
+    &:hover {
+        filter: brightness(150%);
+        transition: filter 0.2s;
+    }
+}
+
+#Keypad.autoload {
+    filter: brightness(200%);
 }

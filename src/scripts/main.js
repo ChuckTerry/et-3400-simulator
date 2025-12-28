@@ -246,13 +246,6 @@ function segmentTestMouseDownHandler() {
 }
 
 /**
- * Handles the segment test mouse up event
- */
-function segmentTestMouseUpHandler() {
-    document.querySelector('#Displays').classList.remove('segment-test-active');
-}
-
-/**
  * Main function for the simulator
  */
 window.addEventListener('load', () => {
@@ -274,5 +267,4 @@ window.addEventListener('load', () => {
     globalThis.et3400.examineController = new ExamineController();
     document.querySelector('#simulator-svg').addEventListener('click', examineClickHandler);
     document.querySelector('#Test_Leads').addEventListener('mousedown', segmentTestMouseDownHandler);
-    document.querySelector('#Test_Leads').addEventListener('mouseup', segmentTestMouseUpHandler);
 });

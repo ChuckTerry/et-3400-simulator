@@ -245,6 +245,7 @@ export class Et3400 {
                 if (!isMeta) characterPosition++;
             }
         }
+        document.querySelector('#Displays').classList.remove('segment-test-active');
     }
 
     /**

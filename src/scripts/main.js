@@ -107,7 +107,7 @@ function examineClickHandler(event) {
  * @returns {false} Always returns false
  */
 function closeDialog(event) {
-    const element =  event.target;
+    const element = event.target;
     element?.closest('dialog')?.close();
     globalThis.modalOpen = false;
     return false;

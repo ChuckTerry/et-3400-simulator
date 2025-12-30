@@ -18,7 +18,7 @@
       "url": "https://github.com/sponsors/ChuckTerry"
     }
   ],
-  "homepage": "https:chuckterry.me/et-3400-simulator",
+  "homepage": "https://chuckterry.me/et-3400-simulator",
   "keywords": [
     "6800",
     "CPU",
@@ -45,13 +45,13 @@
     "test": "echo \"Warning: No Tests run; None provided\" && exit 1"
   },
   "type": "module",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "categories": [
     "Education",
     "Programming Languages",
     "Testing",
     "Visualization",
     "Other"
-    ],
-    "pricing": "Free"
+  ],
+  "pricing": "Free"
 }

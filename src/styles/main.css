@@ -198,6 +198,10 @@ form p {
     padding-bottom: 18px;
 }
 
+form input {
+    margin-top: 10px;
+}
+
 form h2,
 form h3 {
     border-bottom: 4px double #5151b2;

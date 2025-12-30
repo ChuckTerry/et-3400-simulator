@@ -14,7 +14,7 @@
   <body>
     <menu>
       <li><button id="menu-power-button">Power <span id="menu-power-status">Off</span></button></li>
-      <li><button id="menu-autoload-button" disabled>Auto-Load Program</button></li>
+      <li><button id="menu-autoload-button">Auto-Load Program</button></li>
       <li><button id="menu-examine-button">Examine</button></li>
       <li><button id="menu-popout-button">Open Pop-out</button></li>
     </menu>
@@ -20510,6 +20510,22 @@
         <div>
           <button type="button" class="close-dialog" value="default">Close</button>
         </div>
+        <div class="clearfix float-bottom-spacer"></div>
+      </form>
+    </dialog>
+    <dialog id="autoload-modal">
+      <div class="modal-header">
+        <button type="button" class="close-dialog" value="default">✖</button>
+        <h2>Autoload Program</h2>
+      </div>
+      <form id="autoload-form">
+        <label for="start-address">Start Address </label>
+        <input type="text" id="start-address" name="start-address" value="0000" maxlength="4" pattern="[a-fA-F0-9]{1,4}" />
+        <hr />
+        <label for="program-contents">Program</label>
+        <br />
+        <input type="text" id="program-contents" name="program-contents" />
+        <button type="button" id="autoload-load">Load</button>
         <div class="clearfix float-bottom-spacer"></div>
       </form>
     </dialog>

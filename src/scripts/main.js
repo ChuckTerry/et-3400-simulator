@@ -189,6 +189,7 @@ function registerListeners(document = globalThis.document) {
         const program = formData.get('program-contents');
         const loadString = `${startAddress} ${program}`;
         globalThis.autoloader.loadProgram(loadString);
+        globalThis.modalOpen = false;
         document.querySelector('#autoload-modal').close();
     });
 }

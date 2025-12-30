@@ -13,6 +13,9 @@ function makeKeyDownListener(keyData) {
     const { simulator, keyCode, keyboardActivation } = keyData;
     const element = document.querySelector(simulator);
     return function(event) {
+        if (globalThis.modalOpen) {
+            return;
+        }
         event.preventDefault();
         if (event.key.toUpperCase() === keyboardActivation) {
             animateKeyDown(element);
@@ -104,7 +107,9 @@ function examineClickHandler(event) {
  * @returns {false} Always returns false
  */
 function closeDialog(event) {
-    event?.target?.form?.parentElement?.close();
+    const element =  event.target;
+    element?.closest('dialog')?.close();
+    globalThis.modalOpen = false;
     return false;
 }
 
@@ -172,6 +177,20 @@ function registerListeners(document = globalThis.document) {
         const button = dialogCloseButtons[index];
         button.addEventListener('click', closeDialog);
     }
+    document.querySelector('#menu-autoload-button').addEventListener('click', () => {
+        document.querySelector('#autoload-modal').showModal();
+        globalThis.modalOpen = true;
+    });
+
+    document.querySelector('#autoload-load').addEventListener('click', () => {
+        const form = document.querySelector('#autoload-form');
+        const formData = new FormData(form);
+        const startAddress = formData.get('start-address');
+        const program = formData.get('program-contents');
+        const loadString = `${startAddress} ${program}`;
+        globalThis.autoloader.loadProgram(loadString);
+        document.querySelector('#autoload-modal').close();
+    });
 }
 
 /**

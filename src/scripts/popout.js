@@ -94,7 +94,7 @@ function makeKeyDownListener(keyData) {
         event.preventDefault();
         if (event.key.toUpperCase() === keyboardActivation) {
             // Inform Parent Window of the Key Press
-            hostWindow.postMessage(`pressKey:${hexCode}`, '*');
+            hostWindow.postMessage(`pressKey:${hexCode}`, window.location.origin);
         }
     };
 }
@@ -105,7 +105,7 @@ function makeKeyUpListener(keyData) {
         event.preventDefault();
         if (event.key.toUpperCase() === keyboardActivation) {
             // Inform Parent Window of the Key Release
-            hostWindow.postMessage(`releaseKey:${hexCode}`, '*');
+            hostWindow.postMessage(`releaseKey:${hexCode}`, window.location.origin);
         }
     };
 }
@@ -116,7 +116,7 @@ function makeMouseDownListener(keyData) {
     // Prevent default action in case the active page is embedded
         event.preventDefault();
         // Inform Parent Window of the Key Press
-        hostWindow.postMessage(`pressKey:${hexCode}`, '*');
+        hostWindow.postMessage(`pressKey:${hexCode}`, window.location.origin);
     };
 }
 
@@ -126,14 +126,30 @@ function makeMouseUpListener(keyData) {
     // Prevent default action in case the active page is embedded
         event.preventDefault();
         // Inform Parent Window of the Key Release
-        hostWindow.postMessage(`releaseKey:${hexCode}`, '*');
+        hostWindow.postMessage(`releaseKey:${hexCode}`, window.location.origin);
     };
 }
 
 function onMessage(event) {
+    // Only accept messages from the same-origin simulator window that opened this pop-out
+    if (event.origin !== window.location.origin || event.source !== hostWindow) {
+        return;
+    }
     const [action, operand] = event.data.split(':');
     if (action === 'updateDisplay') {
-        document.querySelector('#plaintext-display').innerHTML = operand;
+        // Build the display from text nodes; only <b> and </b> become (lit segment) elements
+        const display = document.querySelector('#plaintext-display');
+        display.textContent = '';
+        let parent = display;
+        for (const part of operand.split(/(<\/?b>)/)) {
+            if (part === '<b>') {
+                parent = display.appendChild(document.createElement('b'));
+            } else if (part === '</b>') {
+                parent = display;
+            } else {
+                parent.append(part);
+            }
+        }
     }
 }
 
@@ -153,7 +169,7 @@ function registerListeners(document = globalThis.document) {
 }
 
 function requestDisplayHtml() {
-    hostWindow.postMessage('sendDisplayData', '*');
+    hostWindow.postMessage('sendDisplayData', window.location.origin);
 }
 
 window.addEventListener('load', () => {

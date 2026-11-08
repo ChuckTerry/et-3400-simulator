@@ -208,7 +208,7 @@ export class Et3400 {
         }
         this.updateSimulatorDisplay();
         if (globalThis.popout) {
-            globalThis.popout.postMessage(`updateDisplay:${string}`, '*');
+            globalThis.popout.postMessage(`updateDisplay:${string}`, globalThis.location.origin);
         }
         globalThis.doDisplayUpdate = false;
     }

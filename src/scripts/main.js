@@ -237,7 +237,7 @@ function onMessage({ data }) {
         globalThis.et3400.pressKey(operand);
     } else if (action === 'sendDisplayData') {
         const currentDisplayHtml = document.querySelector('#plaintext-display').innerHTML;
-        globalThis.popout.postMessage(`updateDisplay:${currentDisplayHtml}`, '*');
+        globalThis.popout.postMessage(`updateDisplay:${currentDisplayHtml}`, window.location.origin);
     }
 }
 
